@@ -1,0 +1,96 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      TZ: Asia/Shanghai
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from tag
+        id: version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/v}
+          TAG_NAME=${GITHUB_REF#refs/tags/}
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+          echo "tag=$TAG_NAME" >> $GITHUB_OUTPUT
+          echo "Version: $VERSION"
+          echo "Tag: $TAG_NAME"
+
+      - name: Get tag message
+        id: tag_message
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TAG_NAME=${{ steps.version.outputs.tag }}
+          RELEASE_BODY=$(gh release view "$TAG_NAME" --json body -q .body || echo "")
+          printf '%s\n' "$RELEASE_BODY" > /tmp/tag_message.txt
+          echo "Tag message saved to /tmp/tag_message.txt"
+          echo "Tag message content:"
+          cat /tmp/tag_message.txt
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Update version files and generate changelog
+        run: |
+          CURRENT_DATE=$(date +%Y-%m-%d)
+          VERSION="${{ steps.version.outputs.version }}"
+          TAG_MESSAGE=$(cat /tmp/tag_message.txt)
+          echo "Updating CHANGELOG file..."
+          {
+            echo "## [$VERSION] - $CURRENT_DATE"
+            echo ""
+            cat /tmp/tag_message.txt
+            echo ""
+          } > /tmp/new_entry.txt
+
+          if [ -f "CHANGELOG" ]; then
+            cp CHANGELOG CHANGELOG.bak
+            cat /tmp/new_entry.txt CHANGELOG.bak > CHANGELOG
+          else
+            cp /tmp/new_entry.txt CHANGELOG
+          fi
+          echo "✅ Updated CHANGELOG with new entry for version $VERSION"
+
+          echo "Updating VERSION.txt..."
+          echo "$VERSION" > VERSION.txt
+          echo "✅ Updated VERSION.txt to $VERSION"
+
+          echo "Generating changelog TypeScript file..."
+          node scripts/convert-changelog.js
+
+          echo "Updating version.ts..."
+            sed -i "s/const CURRENT_VERSION = '[^']*';/const CURRENT_VERSION = '$VERSION';/" src/lib/version.ts
+            echo "✅ Updated version.ts to $VERSION"
+
+      - name: Commit generated files
+        run: |
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add CHANGELOG VERSION.txt src/lib/changelog.ts src/lib/version.ts
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "chore: Bump to ${{ steps.version.outputs.version }}"
+            git push origin HEAD:main
+            echo "Committed and pushed generated files"
+          fi

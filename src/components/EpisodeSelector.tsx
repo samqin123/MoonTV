@@ -23,6 +23,8 @@ interface VideoInfo {
 interface EpisodeSelectorProps {
   /** 总集数 */
   totalEpisodes: number;
+  /** 剧集标题 */
+  episodes_titles: string[];
   /** 每页显示多少集，默认 50 */
   episodesPerPage?: number;
   /** 当前选中的集数（1 开始） */
@@ -47,6 +49,7 @@ interface EpisodeSelectorProps {
  */
 const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
   totalEpisodes,
+  episodes_titles,
   episodesPerPage = 50,
   value = 1,
   onChange,
@@ -95,6 +98,14 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
 
   // 是否倒序显示
   const [descending, setDescending] = useState<boolean>(false);
+
+  // 根据 descending 状态计算实际显示的分页索引
+  const displayPage = useMemo(() => {
+    if (descending) {
+      return pageCount - 1 - currentPage;
+    }
+    return currentPage;
+  }, [currentPage, descending, pageCount]);
 
   // 获取视频信息的函数 - 移除 attemptedSources 依赖避免不必要的重新创建
   const getVideoInfo = useCallback(async (source: SearchResult) => {
@@ -212,19 +223,27 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
     return Array.from({ length: pageCount }, (_, i) => {
       const start = i * episodesPerPage + 1;
       const end = Math.min(start + episodesPerPage - 1, totalEpisodes);
-      return `${start}-${end}`;
+      return { start, end };
     });
   }, [pageCount, episodesPerPage, totalEpisodes]);
 
-  // 分页标签始终保持升序
-  const categories = categoriesAsc;
+  // 根据 descending 状态决定分页标签的排序和内容
+  const categories = useMemo(() => {
+    if (descending) {
+      // 倒序时，label 也倒序显示
+      return [...categoriesAsc]
+        .reverse()
+        .map(({ start, end }) => `${end}-${start}`);
+    }
+    return categoriesAsc.map(({ start, end }) => `${start}-${end}`);
+  }, [categoriesAsc, descending]);
 
   const categoryContainerRef = useRef<HTMLDivElement>(null);
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // 当分页切换时，将激活的分页标签滚动到视口中间
   useEffect(() => {
-    const btn = buttonRefs.current[currentPage];
+    const btn = buttonRefs.current[displayPage];
     const container = categoryContainerRef.current;
     if (btn && container) {
       // 手动计算滚动位置，只滚动分页标签容器
@@ -246,16 +265,24 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
         behavior: 'smooth',
       });
     }
-  }, [currentPage, pageCount]);
+  }, [displayPage, pageCount]);
 
   // 处理换源tab点击，只在点击时才搜索
   const handleSourceTabClick = () => {
     setActiveTab('sources');
   };
 
-  const handleCategoryClick = useCallback((index: number) => {
-    setCurrentPage(index);
-  }, []);
+  const handleCategoryClick = useCallback(
+    (index: number) => {
+      if (descending) {
+        // 在倒序时，需要将显示索引转换为实际索引
+        setCurrentPage(pageCount - 1 - index);
+      } else {
+        setCurrentPage(index);
+      }
+    },
+    [descending, pageCount]
+  );
 
   const handleEpisodeClick = useCallback(
     (episodeNumber: number) => {
@@ -317,7 +344,7 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
             <div className='flex-1 overflow-x-auto' ref={categoryContainerRef}>
               <div className='flex gap-2 min-w-max'>
                 {categories.map((label, idx) => {
-                  const isActive = idx === currentPage;
+                  const isActive = idx === displayPage;
                   return (
                     <button
                       key={label}
@@ -367,7 +394,7 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
           </div>
 
           {/* 集数网格 */}
-          <div className='grid grid-cols-[repeat(auto-fill,minmax(40px,1fr))] auto-rows-[40px] gap-x-3 gap-y-3 overflow-y-auto h-full pb-4'>
+          <div className='flex flex-wrap gap-3 overflow-y-auto flex-1 content-start pb-4'>
             {(() => {
               const len = currentEnd - currentStart + 1;
               const episodes = Array.from({ length: len }, (_, i) =>
@@ -380,14 +407,25 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
                 <button
                   key={episodeNumber}
                   onClick={() => handleEpisodeClick(episodeNumber - 1)}
-                  className={`h-10 flex items-center justify-center text-sm font-medium rounded-md transition-all duration-200 
+                  className={`h-10 min-w-10 px-3 py-2 flex items-center justify-center text-sm font-medium rounded-md transition-all duration-200 whitespace-nowrap font-mono
                     ${
                       isActive
                         ? 'bg-green-500 text-white shadow-lg shadow-green-500/25 dark:bg-green-600'
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 dark:bg-white/10 dark:text-gray-300 dark:hover:bg-white/20'
                     }`.trim()}
                 >
-                  {episodeNumber}
+                  {(() => {
+                    const title = episodes_titles?.[episodeNumber - 1];
+                    if (!title) {
+                      return episodeNumber;
+                    }
+                    // 如果匹配"第X集"格式，提取中间的数字
+                    const match = title.match(/第(\d+)集/);
+                    if (match) {
+                      return match[1];
+                    }
+                    return title;
+                  })()}
                 </button>
               );
             })}

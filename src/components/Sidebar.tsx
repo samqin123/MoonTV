@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 'use client';
 
-import { Clover, Film, Home, Menu, Search, Tv } from 'lucide-react';
+import { Cat, Clover, Film, Home, Menu, Search, Star, Tv } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -122,7 +124,7 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
     isCollapsed,
   };
 
-  const menuItems = [
+  const [menuItems, setMenuItems] = useState([
     {
       icon: Film,
       label: '电影',
@@ -134,11 +136,30 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
       href: '/douban?type=tv',
     },
     {
+      icon: Cat,
+      label: '动漫',
+      href: '/douban?type=anime',
+    },
+    {
       icon: Clover,
       label: '综艺',
       href: '/douban?type=show',
     },
-  ];
+  ]);
+
+  useEffect(() => {
+    const runtimeConfig = (window as any).RUNTIME_CONFIG;
+    if (runtimeConfig?.CUSTOM_CATEGORIES?.length > 0) {
+      setMenuItems((prevItems) => [
+        ...prevItems,
+        {
+          icon: Star,
+          label: '自定义',
+          href: '/douban?type=custom',
+        },
+      ]);
+    }
+  }, []);
 
   return (
     <SidebarContext.Provider value={contextValue}>
@@ -224,7 +245,6 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
                 {menuItems.map((item) => {
                   // 检查当前路径是否匹配这个菜单项
                   const typeMatch = item.href.match(/type=([^&]+)/)?.[1];
-                  const tagMatch = item.href.match(/tag=([^&]+)/)?.[1];
 
                   // 解码URL以进行正确的比较
                   const decodedActive = decodeURIComponent(active);
@@ -233,9 +253,7 @@ const Sidebar = ({ onToggle, activePath = '/' }: SidebarProps) => {
                   const isActive =
                     decodedActive === decodedItemHref ||
                     (decodedActive.startsWith('/douban') &&
-                      decodedActive.includes(`type=${typeMatch}`) &&
-                      tagMatch &&
-                      decodedActive.includes(`tag=${tagMatch}`));
+                      decodedActive.includes(`type=${typeMatch}`));
                   const Icon = item.icon;
                   return (
                     <Link

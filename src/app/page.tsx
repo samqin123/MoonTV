@@ -6,6 +6,10 @@ import { ChevronRight } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense, useEffect, useState } from 'react';
 
+import {
+  BangumiCalendarData,
+  GetBangumiCalendarData,
+} from '@/lib/bangumi.client';
 // 客户端收藏 API
 import {
   clearAllFavorites,
@@ -28,6 +32,9 @@ function HomeClient() {
   const [hotMovies, setHotMovies] = useState<DoubanItem[]>([]);
   const [hotTvShows, setHotTvShows] = useState<DoubanItem[]>([]);
   const [hotVarietyShows, setHotVarietyShows] = useState<DoubanItem[]>([]);
+  const [bangumiCalendarData, setBangumiCalendarData] = useState<
+    BangumiCalendarData[]
+  >([]);
   const [loading, setLoading] = useState(true);
   const { announcement } = useSite();
 
@@ -60,20 +67,22 @@ function HomeClient() {
   const [favoriteItems, setFavoriteItems] = useState<FavoriteItem[]>([]);
 
   useEffect(() => {
-    const fetchDoubanData = async () => {
+    const fetchRecommendData = async () => {
       try {
         setLoading(true);
 
         // 并行获取热门电影、热门剧集和热门综艺
-        const [moviesData, tvShowsData, varietyShowsData] = await Promise.all([
-          getDoubanCategories({
-            kind: 'movie',
-            category: '热门',
-            type: '全部',
-          }),
-          getDoubanCategories({ kind: 'tv', category: 'tv', type: 'tv' }),
-          getDoubanCategories({ kind: 'tv', category: 'show', type: 'show' }),
-        ]);
+        const [moviesData, tvShowsData, varietyShowsData, bangumiCalendarData] =
+          await Promise.all([
+            getDoubanCategories({
+              kind: 'movie',
+              category: '热门',
+              type: '全部',
+            }),
+            getDoubanCategories({ kind: 'tv', category: 'tv', type: 'tv' }),
+            getDoubanCategories({ kind: 'tv', category: 'show', type: 'show' }),
+            GetBangumiCalendarData(),
+          ]);
 
         if (moviesData.code === 200) {
           setHotMovies(moviesData.list);
@@ -86,14 +95,16 @@ function HomeClient() {
         if (varietyShowsData.code === 200) {
           setHotVarietyShows(varietyShowsData.list);
         }
+
+        setBangumiCalendarData(bangumiCalendarData);
       } catch (error) {
-        console.error('获取豆瓣数据失败:', error);
+        console.error('获取推荐数据失败:', error);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchDoubanData();
+    fetchRecommendData();
   }, []);
 
   // 处理收藏数据更新的函数
@@ -251,7 +262,7 @@ function HomeClient() {
                             from='douban'
                             title={movie.title}
                             poster={movie.poster}
-                            douban_id={movie.id}
+                            douban_id={Number(movie.id)}
                             rate={movie.rate}
                             year={movie.year}
                             type='movie'
@@ -299,12 +310,87 @@ function HomeClient() {
                             from='douban'
                             title={show.title}
                             poster={show.poster}
-                            douban_id={show.id}
+                            douban_id={Number(show.id)}
                             rate={show.rate}
                             year={show.year}
                           />
                         </div>
                       ))}
+                </ScrollableRow>
+              </section>
+
+              {/* 每日新番放送 */}
+              <section className='mb-8'>
+                <div className='mb-4 flex items-center justify-between'>
+                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+                    新番放送
+                  </h2>
+                  <Link
+                    href='/douban?type=anime'
+                    className='flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                  >
+                    查看更多
+                    <ChevronRight className='w-4 h-4 ml-1' />
+                  </Link>
+                </div>
+                <ScrollableRow>
+                  {loading
+                    ? // 加载状态显示灰色占位数据
+                      Array.from({ length: 8 }).map((_, index) => (
+                        <div
+                          key={index}
+                          className='min-w-[96px] w-24 sm:min-w-[180px] sm:w-44'
+                        >
+                          <div className='relative aspect-[2/3] w-full overflow-hidden rounded-lg bg-gray-200 animate-pulse dark:bg-gray-800'>
+                            <div className='absolute inset-0 bg-gray-300 dark:bg-gray-700'></div>
+                          </div>
+                          <div className='mt-2 h-4 bg-gray-200 rounded animate-pulse dark:bg-gray-800'></div>
+                        </div>
+                      ))
+                    : // 展示当前日期的番剧
+                      (() => {
+                        // 获取当前日期对应的星期
+                        const today = new Date();
+                        const weekdays = [
+                          'Sun',
+                          'Mon',
+                          'Tue',
+                          'Wed',
+                          'Thu',
+                          'Fri',
+                          'Sat',
+                        ];
+                        const currentWeekday = weekdays[today.getDay()];
+
+                        // 找到当前星期对应的番剧数据
+                        const todayAnimes =
+                          bangumiCalendarData.find(
+                            (item) => item.weekday.en === currentWeekday
+                          )?.items || [];
+
+                        return todayAnimes.map((anime, index) => (
+                          <div
+                            key={`${anime.id}-${index}`}
+                            className='min-w-[96px] w-24 sm:min-w-[180px] sm:w-44'
+                          >
+                            <VideoCard
+                              from='douban'
+                              title={anime.name_cn || anime.name}
+                              poster={
+                                anime.images.large ||
+                                anime.images.common ||
+                                anime.images.medium ||
+                                anime.images.small ||
+                                anime.images.grid
+                              }
+                              douban_id={anime.id}
+                              rate={anime.rating?.score?.toString() || ''}
+                              year={anime.air_date?.split('-')?.[0] || ''}
+                              isBangumi={true}
+                            />
+                          </div>
+                        ));
+                      })()}
                 </ScrollableRow>
               </section>
 
@@ -346,7 +432,7 @@ function HomeClient() {
                             from='douban'
                             title={show.title}
                             poster={show.poster}
-                            douban_id={show.id}
+                            douban_id={Number(show.id)}
                             rate={show.rate}
                             year={show.year}
                           />

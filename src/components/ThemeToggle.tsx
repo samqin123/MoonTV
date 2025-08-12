@@ -3,12 +3,14 @@
 'use client';
 
 import { Moon, Sun } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
 
 export function ThemeToggle() {
   const [mounted, setMounted] = useState(false);
   const { setTheme, resolvedTheme } = useTheme();
+  const pathname = usePathname();
 
   const setThemeColor = (theme?: string) => {
     const meta = document.querySelector('meta[name="theme-color"]');
@@ -24,8 +26,14 @@ export function ThemeToggle() {
 
   useEffect(() => {
     setMounted(true);
-    setThemeColor(resolvedTheme);
   }, []);
+
+  // 监听主题变化和路由变化，确保主题色始终同步
+  useEffect(() => {
+    if (mounted) {
+      setThemeColor(resolvedTheme);
+    }
+  }, [mounted, resolvedTheme, pathname]);
 
   if (!mounted) {
     // 渲染一个占位符以避免布局偏移

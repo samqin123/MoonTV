@@ -33,15 +33,21 @@ export async function POST(request: NextRequest) {
       Announcement,
       SearchDownstreamMaxPage,
       SiteInterfaceCacheTime,
-      ImageProxy,
+      DoubanProxyType,
       DoubanProxy,
+      DoubanImageProxyType,
+      DoubanImageProxy,
+      DisableYellowFilter,
     } = body as {
       SiteName: string;
       Announcement: string;
       SearchDownstreamMaxPage: number;
       SiteInterfaceCacheTime: number;
-      ImageProxy: string;
+      DoubanProxyType: string;
       DoubanProxy: string;
+      DoubanImageProxyType: string;
+      DoubanImageProxy: string;
+      DisableYellowFilter: boolean;
     };
 
     // 参数校验
@@ -50,8 +56,11 @@ export async function POST(request: NextRequest) {
       typeof Announcement !== 'string' ||
       typeof SearchDownstreamMaxPage !== 'number' ||
       typeof SiteInterfaceCacheTime !== 'number' ||
-      typeof ImageProxy !== 'string' ||
-      typeof DoubanProxy !== 'string'
+      typeof DoubanProxyType !== 'string' ||
+      typeof DoubanProxy !== 'string' ||
+      typeof DoubanImageProxyType !== 'string' ||
+      typeof DoubanImageProxy !== 'string' ||
+      typeof DisableYellowFilter !== 'boolean'
     ) {
       return NextResponse.json({ error: '参数格式错误' }, { status: 400 });
     }
@@ -65,7 +74,7 @@ export async function POST(request: NextRequest) {
       const user = adminConfig.UserConfig.Users.find(
         (u) => u.username === username
       );
-      if (!user || user.role !== 'admin') {
+      if (!user || user.role !== 'admin' || user.banned) {
         return NextResponse.json({ error: '权限不足' }, { status: 401 });
       }
     }
@@ -76,8 +85,11 @@ export async function POST(request: NextRequest) {
       Announcement,
       SearchDownstreamMaxPage,
       SiteInterfaceCacheTime,
-      ImageProxy,
+      DoubanProxyType,
       DoubanProxy,
+      DoubanImageProxyType,
+      DoubanImageProxy,
+      DisableYellowFilter,
     };
 
     // 写入数据库
