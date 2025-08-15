@@ -1,45 +1,45 @@
-name: Upstream Sync
+name: Sync Fork with Upstream (Keep Workflow)
 
 on:
   schedule:
-    - cron: "0 */6 * * *" # run every 6 hours
+    - cron: '0 */4 * * *' # 每 4 小时一次
   workflow_dispatch:
 
-permissions:
-  contents: write
-  actions: write
-
 jobs:
-  sync_latest_from_upstream:
-    name: Sync latest commits from upstream repo
+  sync:
     runs-on: ubuntu-latest
-    if: ${{ github.event.repository.fork }}
-
     steps:
-      # Step 1: run a standard checkout action
-      - name: Checkout target repo
+      - name: Checkout current repository
         uses: actions/checkout@v4
-
-      # Step 2: run the sync action
-      - name: Sync upstream changes
-        id: sync
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
         with:
-          upstream_sync_repo: senshinya/MoonTV
-          upstream_sync_branch: main
-          target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0   # 保留完整提交历史
 
-      - name: Sync check
-        if: failure()
+      - name: Set up Git
         run: |
-          echo "[Error] Due to a change in the workflow file of the upstream repository, GitHub has automatically suspended the scheduled automatic update. You need to manually sync your fork."
-          exit 1
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Delete workflow runs
-        uses: Mattraks/delete-workflow-runs@main
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: ${{ github.repository }}
-          retain_days: 0
-          keep_minimum_runs: 2
+      - name: Backup workflows directory
+        run: |
+          mkdir -p /tmp/workflows
+          cp -r .github/workflows/* /tmp/workflows/ || true
+
+      - name: Add upstream and fetch
+        run: |
+          git remote add upstream https://github.com/Luckykeeper/MoonTV.git
+          git fetch upstream
+
+      - name: Merge upstream changes into main
+        run: |
+          git checkout main
+          git merge upstream/main --no-edit || true
+
+      - name: Restore workflows directory
+        run: |
+          mkdir -p .github/workflows
+          cp -r /tmp/workflows/* .github/workflows/ || true
+          git add .github/workflows || true
+          git commit -m "Restore workflows after sync" || true
+
+      - name: Push changes to origin
+        run: git push origin main
