@@ -1297,6 +1297,23 @@ function PlayPageClient() {
             video.hls = hls;
 
             ensureVideoSource(video, url);
+            
+            // 恢复进度的函数
+    function seekToResume() {
+      if (resumeTimeRef.current && resumeTimeRef.current > 0) {
+        video.currentTime = resumeTimeRef.current;
+        if (artPlayerRef.current) artPlayerRef.current.currentTime = resumeTimeRef.current;
+      }
+    }
+
+    // 多个事件尝试恢复进度
+    hls.on(Hls.Events.LEVEL_LOADED, seekToResume);
+    hls.on(Hls.Events.FRAG_CHANGED, seekToResume);
+    video.addEventListener('canplay', seekToResume);
+
+    // 保险措施，多次 setTimeout
+    setTimeout(seekToResume, 200);
+    setTimeout(seekToResume, 500);
 
             hls.on(Hls.Events.ERROR, function (event: any, data: any) {
               console.error('HLS Error:', event, data);
