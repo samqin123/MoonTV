@@ -1216,7 +1216,7 @@ function PlayPageClient() {
     }
     */
     // WebKit浏览器或首次创建：销毁之前的播放器实例并创建新的
-    if (isWebkit || artPlayerRef.current) {
+    if (artPlayerRef.current) {
       if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
         artPlayerRef.current.video.hls.destroy();
       }
@@ -1278,7 +1278,7 @@ function PlayPageClient() {
             const hls = new Hls({
               debug: false, // 关闭日志
               enableWorker: true, // WebWorker 解码，降低主线程压力
-              lowLatencyMode: true, // 开启低延迟 LL-HLS
+              lowLatencyMode: false, // 开启低延迟 LL-HLS
 
               /* 缓冲/内存相关 */
               maxBufferLength: 30, // 前向缓冲最大 30s，过大容易导致高延迟
@@ -1293,6 +1293,20 @@ function PlayPageClient() {
 
             hls.loadSource(url);
             hls.attachMedia(video);
+        
+        //测试----------------------------------
+   hls.on(Hls.Events.MEDIA_ATTACHED, () => {
+      console.log('HLS.js 已附加媒体');
+    });
+
+    hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      console.log('HLS.js 清单已解析');
+      if (resumeTimeRef.current) {
+        video.currentTime = resumeTimeRef.current;
+      }
+    });
+        //测试-----------------------------------
+
             video.hls = hls;
 
             ensureVideoSource(video, url);
