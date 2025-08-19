@@ -1137,7 +1137,7 @@ const useSaveProgress = () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
   }, [currentEpisodeIndex, detail]);
-*/-----------原来的--------------
+-----------原来的--------------*/
   // 清理定时器
   useEffect(() => {
     return () => {
