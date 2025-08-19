@@ -766,7 +766,6 @@ function PlayPageClient() {
   initFromHistory();
 }, [currentSource, currentId]);
 
-
   // 跳过片头片尾配置处理
   useEffect(() => {
     // 仅在初次挂载时检查跳过片头片尾配置
