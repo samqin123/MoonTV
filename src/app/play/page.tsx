@@ -735,7 +735,7 @@ function PlayPageClient() {
       // 短暂延迟让用户看到完成状态
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 500);
     };
 
     initAll();
@@ -1070,22 +1070,7 @@ function PlayPageClient() {
     // 页面即将卸载时保存播放进度
     const handleBeforeUnload = () => {
       saveCurrentPlayProgress();
-      //测试-----------------------------------------
-      return () => {
-    if (artPlayerRef.current) {
-      // 销毁 HLS 实例
-      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
-        artPlayerRef.current.video.hls.destroy();
-        console.log('HLS 实例已销毁');
-      }
-
-      // 销毁播放器实例
-      artPlayerRef.current.destroy();
-      console.log('ArtPlayer 实例已销毁');
-      artPlayerRef.current = null;
-    }
-  };
-      //测试-----------------------------------------
+      
     };
 
     // 页面可见性变化时保存播放进度
@@ -1093,22 +1078,7 @@ function PlayPageClient() {
       if (document.visibilityState === 'hidden') {
         saveCurrentPlayProgress();
       }
-      //测试-----------------------------------------
-      return () => {
-    if (artPlayerRef.current) {
-      // 销毁 HLS 实例
-      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
-        artPlayerRef.current.video.hls.destroy();
-        console.log('HLS 实例已销毁');
-      }
-
-      // 销毁播放器实例
-      artPlayerRef.current.destroy();
-      console.log('ArtPlayer 实例已销毁');
-      artPlayerRef.current = null;
-    }
-  };
-      //测试-----------------------------------------
+     
     };
 
     // 添加事件监听器
@@ -1304,9 +1274,17 @@ function PlayPageClient() {
               return;
             }
 
+              /*换成下面测试
             if (video.hls) {
               video.hls.destroy();
             }
+             */
+              //测试-----------------------------------
+               if (artPlayerRef.current.video || artPlayerRef.current.video.hls) {
+                artPlayerRef.current.video.hls.destroy();
+                video.hls.destroy();
+              }
+              //测试-----------------------------------
             const hls = new Hls({
               debug: false, // 关闭日志
               enableWorker: true, // WebWorker 解码，降低主线程压力
