@@ -146,6 +146,8 @@ function PlayPageClient() {
 
   // 用于记录是否需要在播放器 ready 后跳转到指定进度
   const resumeTimeRef = useRef<number | null>(null);
+  // 标志位，防止重复应用播放进度
+  const resumeAppliedRef = useRef<boolean>(false);
   // 上次使用的音量，默认 0.7
   const lastVolumeRef = useRef<number>(0.7);
   // 上次使用的播放速率，默认 1.0
@@ -1273,7 +1275,7 @@ function PlayPageClient() {
             }
 
             if (video.hls) {
-              video.hls.destroy();
+              video.hls.destroy();// 销毁旧的 HLS 实例
             }
             const hls = new Hls({
               debug: false, // 关闭日志
@@ -1297,27 +1299,29 @@ function PlayPageClient() {
 
             ensureVideoSource(video, url);
             
-        let resumeApplied = false; // **标志位，防止进度多次恢复**
+        
 
-        const applyResumeTime = () => {
-          if (resumeTimeRef.current && resumeTimeRef.current > 0 && !resumeApplied) {
-            console.log('恢复播放进度到:', resumeTimeRef.current);
-            video.currentTime = resumeTimeRef.current; // **设置播放进度**
-            resumeApplied = true; // **标记为已应用**
-          }
-        };
+            // 恢复进度的函数
+    function seekToResume() {
+      if (resumeTimeRef.current && resumeTimeRef.current > 0 && !resumeAppliedRef.current) {
+        video.currentTime = resumeTimeRef.current;
+        console.log('重连后恢复播放进度到:', resumeTimeRef.current);
 
-        // **监听 HLS.js 的事件**
-        hls.on(Hls.Events.LEVEL_LOADED, applyResumeTime); // **流加载完成后恢复进度**
-        hls.on(Hls.Events.FRAG_LOADED, applyResumeTime); // **分片加载完成后恢复进度**
+        // 标记为已恢复
+        resumeAppliedRef.current = true;
+      }
+    }
 
-        // **监听视频的 `canplay` 事件**
-        video.addEventListener('video:canplay', applyResumeTime);
+    // 监听 HLS.js 的相关事件
+    hls.on(Hls.Events.LEVEL_LOADED, seekToResume);
+    hls.on(Hls.Events.FRAG_LOADED, seekToResume);
 
-        // **保险措施：延迟恢复进度，确保覆盖 HLS 的重置行为**
-        setTimeout(applyResumeTime, 200); // **延迟 200ms**
-        setTimeout(applyResumeTime, 500); // **延迟 500ms**
+    // 监听 canplay 事件作为保险
+    video.addEventListener('canplay', seekToResume);
 
+    // 保险措施，多次 setTimeout
+    setTimeout(seekToResume, 200);
+    setTimeout(seekToResume, 500);
             
             hls.on(Hls.Events.ERROR, function (event: any, data: any) {
               console.error('HLS Error:', event, data);
@@ -1466,23 +1470,26 @@ function PlayPageClient() {
         lastPlaybackRateRef.current = artPlayerRef.current.playbackRate;
       });
 
-      // 监听视频可播放事件，这时恢复播放进度更可靠
-      //artPlayerRef.current.on('video:canplay', () => {
-        // 若存在需要恢复的播放进度，则跳转
-      //  if (resumeTimeRef.current && resumeTimeRef.current > 0) {
-       //   try {
-       //     const duration = artPlayerRef.current.duration || 0;
-       //     let target = resumeTimeRef.current;
-      //      if (duration && target >= duration - 2) {
-       //       target = Math.max(0, duration - 5);
-       //     }
-      //      artPlayerRef.current.currentTime = target;
-       //     console.log('成功恢复播放进度到:', resumeTimeRef.current);
-      //    } catch (err) {
-      //      console.warn('恢复播放进度失败:', err);
-      //    }
-     //   }
-      //  resumeTimeRef.current = null;
+       监听视频可播放事件，这时恢复播放进度更可靠
+      artPlayerRef.current.on('video:canplay', () => {
+         若存在需要恢复的播放进度，则跳转
+        if (resumeTimeRef.current && resumeTimeRef.current > 0 && !resumeAppliedRef.current) {
+          try {
+            const duration = artPlayerRef.current.duration || 0;
+            let target = resumeTimeRef.current;
+            // 如果接近视频结尾，调整为结尾前 5 秒
+            if (duration && target >= duration - 2) {
+              target = Math.max(0, duration - 5);
+            }
+            artPlayerRef.current.currentTime = target;  // 设置播放进度
+            console.log('成功恢复播放进度到:', resumeTimeRef.current);
+           // 标记为已应用
+            resumeAppliedRef.current = true;
+          } catch (err) {
+            console.warn('恢复播放进度失败:', err);
+          }
+        }
+        resumeTimeRef.current = null;
 
         setTimeout(() => {
           if (
