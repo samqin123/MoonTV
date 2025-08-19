@@ -41,7 +41,7 @@ function PlayPageClient() {
   // -----------------------------------------------------------------------------
   // 状态变量（State）
   // -----------------------------------------------------------------------------
-  //const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [historyLoaded, setHistoryLoaded] = useState(false);
   const [loadingStage, setLoadingStage] = useState<
     'searching' | 'preferring' | 'fetching' | 'ready'
