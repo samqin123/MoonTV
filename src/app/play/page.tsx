@@ -41,7 +41,8 @@ function PlayPageClient() {
   // -----------------------------------------------------------------------------
   // 状态变量（State）
   // -----------------------------------------------------------------------------
-  const [loading, setLoading] = useState(true);
+  //const [loading, setLoading] = useState(true);
+  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [loadingStage, setLoadingStage] = useState<
     'searching' | 'preferring' | 'fetching' | 'ready'
   >('searching');
@@ -744,7 +745,7 @@ function PlayPageClient() {
   // 播放记录处理
   useEffect(() => {
   if (!currentSource || !currentId) return;
-    
+  setHistoryLoaded(false); // 新增：每次切换时先设为false
   const initFromHistory = async () => {
     try {
       const allRecords = await getAllPlayRecords();
@@ -760,9 +761,10 @@ function PlayPageClient() {
       }
     } catch (err) {
       console.error('读取播放记录失败:', err);
+    } finally {
+      setHistoryLoaded(true); // 新增：完成后设为true
     }
   };
-
   initFromHistory();
 }, [currentSource, currentId]);
 
@@ -1170,7 +1172,8 @@ function PlayPageClient() {
       !videoUrl ||
       loading ||
       currentEpisodeIndex === null ||
-      !artRef.current
+      !artRef.current ||
+      !historyLoaded // 新增：只有历史记录加载好再初始化
     ) {
       return;
     }
@@ -1572,7 +1575,7 @@ function PlayPageClient() {
       console.error('创建播放器失败:', err);
       setError('播放器初始化失败');
     }
-  }, [Artplayer, Hls, videoUrl, loading, blockAdEnabled]);
+  }, [Artplayer, Hls, videoUrl, loading, blockAdEnabled, historyLoaded]);
 
   // 当组件卸载时清理定时器
   useEffect(() => {
