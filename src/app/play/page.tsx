@@ -1301,9 +1301,9 @@ function PlayPageClient() {
             // 恢复进度的函数
     function seekToResume() {
       if (resumeTimeRef.current && resumeTimeRef.current > 0) {
-        video.currentTime = resumeTimeRef.current;
-        if (artPlayerRef.current) artPlayerRef.current.currentTime = resumeTimeRef.current;
-      }
+    console.log('尝试恢复进度到:', resumeTimeRef.current);
+    video.currentTime = resumeTimeRef.current; // 恢复播放进度
+  }
     }
 
     // 多个事件尝试恢复进度
