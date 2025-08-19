@@ -1129,6 +1129,11 @@ function PlayPageClient() {
 
     return unsubscribe;
   }, [currentSource, currentId]);
+  
+    // ----【关键改动1】---- 每次切换源/集数都重置恢复标志
+  useEffect(() => {
+    resumeAppliedRef.current = false;
+  }, [currentSource, currentId, currentEpisodeIndex]);
 
   // 切换收藏
   const handleToggleFavorite = async () => {
@@ -1297,16 +1302,29 @@ function PlayPageClient() {
             
         
 
-            // 恢复进度的函数
-    function seekToResume() {
-      if (resumeTimeRef.current && resumeTimeRef.current > 0 && !resumeAppliedRef.current) {
-        video.currentTime = resumeTimeRef.current;
-        console.log('重连后恢复播放进度到:', resumeTimeRef.current);
-
-        // 标记为已恢复
-        resumeAppliedRef.current = true;
-      }
-    }
+            // ----【关键改动2】---- 多次尝试设置 currentTime
+            function seekToResume() {
+              if (
+                resumeTimeRef.current &&
+                resumeTimeRef.current > 0 &&
+                !resumeAppliedRef.current
+              ) {
+                const target = resumeTimeRef.current;
+                const trySeek = () => {
+                  if (Math.abs(video.currentTime - target) > 1) {
+                    video.currentTime = target;
+                  }
+                  // 只有真正seek到位才清空
+                  if (Math.abs(video.currentTime - target) < 1) {
+                    resumeAppliedRef.current = true;
+                    resumeTimeRef.current = null;
+                  }
+                };
+                trySeek();
+                setTimeout(trySeek, 200);
+                setTimeout(trySeek, 500);
+              }
+            }
 
     // 监听 HLS.js 的相关事件
     hls.on(Hls.Events.LEVEL_LOADED, seekToResume);
@@ -1476,16 +1494,22 @@ function PlayPageClient() {
             // 如果接近视频结尾，调整为结尾前 5 秒
             if (duration && target >= duration - 2) {
               target = Math.max(0, duration - 5);
+            }if (Math.abs(artPlayerRef.current.currentTime - target) > 1) {
+              artPlayerRef.current.currentTime = target;
             }
-            artPlayerRef.current.currentTime = target;  // 设置播放进度
+            if (Math.abs(artPlayerRef.current.currentTime - target) < 1) {
+              resumeAppliedRef.current = true;
+              resumeTimeRef.current = null;
+            }
+            //artPlayerRef.current.currentTime = target;  // 设置播放进度
             console.log('成功恢复播放进度到:', resumeTimeRef.current);
            // 标记为已应用
-            resumeAppliedRef.current = true;
+          
           } catch (err) {
             console.warn('恢复播放进度失败:', err);
           }
         }
-        resumeTimeRef.current = null;
+        //resumeTimeRef.current = null;
 
         setTimeout(() => {
           if (
@@ -1599,7 +1623,7 @@ function PlayPageClient() {
       console.error('创建播放器失败:', err);
       setError('播放器初始化失败');
     }
-  }, [Artplayer, Hls, videoUrl, loading, blockAdEnabled]);
+  }, [Artplayer, Hls, videoUrl, loading, blockAdEnabled, currentSource, currentId, currentEpisodeIndex]);
 
   // 当组件卸载时清理定时器
   useEffect(() => {
