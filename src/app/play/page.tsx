@@ -744,7 +744,6 @@ function PlayPageClient() {
   // 播放记录处理
   useEffect(() => {
   if (!currentSource || !currentId) return;
- 
   const initFromHistory = async () => {
     try {
       const allRecords = await getAllPlayRecords();
@@ -766,8 +765,6 @@ function PlayPageClient() {
   initFromHistory();
 }, [currentSource, currentId]);
 
-    initFromHistory();
-  }, []);
 
   // 跳过片头片尾配置处理
   useEffect(() => {
