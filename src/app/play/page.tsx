@@ -1470,9 +1470,9 @@ function PlayPageClient() {
         lastPlaybackRateRef.current = artPlayerRef.current.playbackRate;
       });
 
-       监听视频可播放事件，这时恢复播放进度更可靠
+      // 监听视频可播放事件，这时恢复播放进度更可靠
       artPlayerRef.current.on('video:canplay', () => {
-         若存在需要恢复的播放进度，则跳转
+      //   若存在需要恢复的播放进度，则跳转
         if (resumeTimeRef.current && resumeTimeRef.current > 0 && !resumeAppliedRef.current) {
           try {
             const duration = artPlayerRef.current.duration || 0;
