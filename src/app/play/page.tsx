@@ -744,6 +744,7 @@ function PlayPageClient() {
   // 播放记录处理
   useEffect(() => {
   if (!currentSource || !currentId) return;
+    
   const initFromHistory = async () => {
     try {
       const allRecords = await getAllPlayRecords();
