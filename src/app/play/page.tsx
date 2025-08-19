@@ -743,31 +743,28 @@ function PlayPageClient() {
 
   // 播放记录处理
   useEffect(() => {
-    // 仅在初次挂载时检查播放记录
-    const initFromHistory = async () => {
-      if (!currentSource || !currentId) return;
+  if (!currentSource || !currentId) return;
 
-      try {
-        const allRecords = await getAllPlayRecords();
-        const key = generateStorageKey(currentSource, currentId);
-        const record = allRecords[key];
-
-        if (record) {
-          const targetIndex = record.index - 1;
-          const targetTime = record.play_time;
-
-          // 更新当前选集索引
-          if (targetIndex !== currentEpisodeIndex) {
-            setCurrentEpisodeIndex(targetIndex);
-          }
-
-          // 保存待恢复的播放进度，待播放器就绪后跳转
-          resumeTimeRef.current = targetTime;
+  const initFromHistory = async () => {
+    try {
+      const allRecords = await getAllPlayRecords();
+      const key = generateStorageKey(currentSource, currentId);
+      const record = allRecords[key];
+      if (record) {
+        const targetIndex = record.index - 1;
+        const targetTime = record.play_time;
+        if (targetIndex !== currentEpisodeIndex) {
+          setCurrentEpisodeIndex(targetIndex);
         }
-      } catch (err) {
-        console.error('读取播放记录失败:', err);
+        resumeTimeRef.current = targetTime;
       }
-    };
+    } catch (err) {
+      console.error('读取播放记录失败:', err);
+    }
+  };
+
+  initFromHistory();
+}, [currentSource, currentId]);
 
     initFromHistory();
   }, []);
