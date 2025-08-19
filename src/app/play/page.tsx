@@ -1070,6 +1070,22 @@ function PlayPageClient() {
     // 页面即将卸载时保存播放进度
     const handleBeforeUnload = () => {
       saveCurrentPlayProgress();
+      //测试-----------------------------------------
+      return () => {
+    if (artPlayerRef.current) {
+      // 销毁 HLS 实例
+      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
+        artPlayerRef.current.video.hls.destroy();
+        console.log('HLS 实例已销毁');
+      }
+
+      // 销毁播放器实例
+      artPlayerRef.current.destroy();
+      console.log('ArtPlayer 实例已销毁');
+      artPlayerRef.current = null;
+    }
+  };
+      //测试-----------------------------------------
     };
 
     // 页面可见性变化时保存播放进度
@@ -1077,6 +1093,22 @@ function PlayPageClient() {
       if (document.visibilityState === 'hidden') {
         saveCurrentPlayProgress();
       }
+      //测试-----------------------------------------
+      return () => {
+    if (artPlayerRef.current) {
+      // 销毁 HLS 实例
+      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
+        artPlayerRef.current.video.hls.destroy();
+        console.log('HLS 实例已销毁');
+      }
+
+      // 销毁播放器实例
+      artPlayerRef.current.destroy();
+      console.log('ArtPlayer 实例已销毁');
+      artPlayerRef.current = null;
+    }
+  };
+      //测试-----------------------------------------
     };
 
     // 添加事件监听器
@@ -1278,7 +1310,7 @@ function PlayPageClient() {
             const hls = new Hls({
               debug: false, // 关闭日志
               enableWorker: true, // WebWorker 解码，降低主线程压力
-              lowLatencyMode: false, // 开启低延迟 LL-HLS
+              lowLatencyMode: true, // 开启低延迟 LL-HLS
 
               /* 缓冲/内存相关 */
               maxBufferLength: 30, // 前向缓冲最大 30s，过大容易导致高延迟
@@ -1293,22 +1325,8 @@ function PlayPageClient() {
 
             hls.loadSource(url);
             hls.attachMedia(video);
-        
-        //测试----------------------------------
-   hls.on(Hls.Events.MEDIA_ATTACHED, () => {
-      console.log('HLS.js 已附加媒体');
-    });
-
-    hls.on(Hls.Events.MANIFEST_PARSED, () => {
-      console.log('HLS.js 清单已解析');
-      if (resumeTimeRef.current) {
-        video.currentTime = resumeTimeRef.current;
-      }
-    });
-        //测试-----------------------------------
 
             video.hls = hls;
-
             ensureVideoSource(video, url);
 
             hls.on(Hls.Events.ERROR, function (event: any, data: any) {
@@ -1596,7 +1614,21 @@ function PlayPageClient() {
       if (saveIntervalRef.current) {
         clearInterval(saveIntervalRef.current);
       }
+      //测试-----------------------------------------
+      if (artPlayerRef.current) {
+      // 销毁 HLS 实例
+      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
+        artPlayerRef.current.video.hls.destroy();
+        console.log('HLS 实例已销毁');
+      }
+
+      // 销毁播放器实例
+      artPlayerRef.current.destroy();
+      console.log('ArtPlayer 实例已销毁');
+      artPlayerRef.current = null;
+    }
     };
+    //测试-----------------------------------------
   }, []);
 
   if (loading) {
