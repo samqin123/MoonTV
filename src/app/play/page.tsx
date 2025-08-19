@@ -42,7 +42,6 @@ function PlayPageClient() {
   // 状态变量（State）
   // -----------------------------------------------------------------------------
   const [loading, setLoading] = useState(true);
-  const [historyLoaded, setHistoryLoaded] = useState(false);
   const [loadingStage, setLoadingStage] = useState<
     'searching' | 'preferring' | 'fetching' | 'ready'
   >('searching');
@@ -747,7 +746,6 @@ function PlayPageClient() {
   // 播放记录处理
   useEffect(() => {
   if (!currentSource || !currentId) return;
-  setHistoryLoaded(false); // 新增：每次切换时先设为false
   const initFromHistory = async () => {
     try {
       const allRecords = await getAllPlayRecords();
@@ -763,9 +761,7 @@ function PlayPageClient() {
       }
     } catch (err) {
       console.error('读取播放记录失败:', err);
-    } finally {
-      setHistoryLoaded(true); // 新增：完成后设为true
-    }
+    } 
   };
   initFromHistory();
 }, [currentSource, currentId]);
@@ -1218,7 +1214,7 @@ function PlayPageClient() {
     }
 
     // WebKit浏览器或首次创建：销毁之前的播放器实例并创建新的
-    if (artPlayerRef.current) {
+    if (isWebkit && artPlayerRef.current) {
       if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
         artPlayerRef.current.video.hls.destroy();
       }
@@ -1317,7 +1313,7 @@ function PlayPageClient() {
     hls.on(Hls.Events.FRAG_LOADED, seekToResume);
 
     // 监听 canplay 事件作为保险
-    video.addEventListener('canplay', seekToResume);
+    video.addEventListener('video:canplay', seekToResume);
 
     // 保险措施，多次 setTimeout
     setTimeout(seekToResume, 200);
