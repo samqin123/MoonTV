@@ -1070,11 +1070,6 @@ function PlayPageClient() {
     // 页面即将卸载时保存播放进度
     const handleBeforeUnload = () => {
       saveCurrentPlayProgress();
-
-      artPlayerRef.current.video.hls.destroy();
-      // 销毁播放器实例
-      artPlayerRef.current.destroy();
-      artPlayerRef.current = null;
     };
 
     // 页面可见性变化时保存播放进度
@@ -1204,7 +1199,8 @@ function PlayPageClient() {
       typeof (window as any).webkitConvertPointFromNodeToPage === 'function';
 
     // 非WebKit浏览器且播放器已存在，使用switch方法切换
-    if (!isWebkit && artPlayerRef.current) {
+   /* 
+   if (!isWebkit && artPlayerRef.current) {
       artPlayerRef.current.switch = videoUrl;
       artPlayerRef.current.title = `${videoTitle} - 第${
         currentEpisodeIndex + 1
@@ -1218,7 +1214,7 @@ function PlayPageClient() {
       }
       return;
     }
-
+    */
     // WebKit浏览器或首次创建：销毁之前的播放器实例并创建新的
     if (isWebkit || artPlayerRef.current) {
       if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
