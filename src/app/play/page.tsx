@@ -1070,6 +1070,11 @@ function PlayPageClient() {
     // 页面即将卸载时保存播放进度
     const handleBeforeUnload = () => {
       saveCurrentPlayProgress();
+
+      artPlayerRef.current.video.hls.destroy();
+      // 销毁播放器实例
+      artPlayerRef.current.destroy();
+      artPlayerRef.current = null;
     };
 
     // 页面可见性变化时保存播放进度
