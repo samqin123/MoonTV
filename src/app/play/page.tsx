@@ -1036,6 +1036,17 @@ function PlayPageClient() {
       return;
     }
 
+    // 在组件开始处添加一个辅助函数-------测试---------
+const useSaveProgress = () => {
+  const saveProgressRef = useRef<() => void>();
+  
+  // 保持 saveCurrentPlayProgress 的最新引用
+  useEffect(() => {
+    saveProgressRef.current = saveCurrentPlayProgress;
+  });
+
+  return saveProgressRef;
+};//---------------------测试----------------------
     const player = artPlayerRef.current;
     const currentTime = player.currentTime || 0;
     const duration = player.duration || 0;
@@ -1079,23 +1090,35 @@ function PlayPageClient() {
     };
 */
   // 修改组件卸载清理逻辑------修改后-------------
-useEffect(() => {
-  return () => {
-    // 组件卸载时保存播放进度
-    saveCurrentPlayProgress();
-    
-    if (saveIntervalRef.current) {
-      clearInterval(saveIntervalRef.current);
-    }
-    
-    // 只清理HLS实例，不销毁整个播放器
-    if (artPlayerRef.current && artPlayerRef.current.video && artPlayerRef.current.video.hls) {
-      artPlayerRef.current.video.hls.destroy();
-      console.log('HLS 实例已销毁');
+  useEffect(() => {
+  const saveProgressRef = useSaveProgress();
+  
+  // 页面即将卸载时保存播放进度
+  const handleBeforeUnload = () => {
+    if (saveProgressRef.current) {
+      saveProgressRef.current();
     }
   };
-}, []);// 修改组件卸载清理逻辑------修改后-------------
-  
+
+  // 页面可见性变化时保存播放进度
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === 'hidden' && saveProgressRef.current) {
+      saveProgressRef.current();
+    }
+  };
+
+  // 添加事件监听器
+  window.addEventListener('beforeunload', handleBeforeUnload);
+  document.addEventListener('visibilitychange', handleVisibilityChange);
+
+  return () => {
+    // 清理事件监听器
+    window.removeEventListener('beforeunload', handleBeforeUnload);
+    document.removeEventListener('visibilitychange', handleVisibilityChange);
+  };
+}, []); // 空依赖数组，因为函数通过 ref 保持最新
+// 修改组件卸载清理逻辑------修改后-------------
+  /*---------------原来的-------------------
     // 页面可见性变化时保存播放进度
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
@@ -1113,8 +1136,8 @@ useEffect(() => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, [currentEpisodeIndex, detail, artPlayerRef.current]);
-
+  }, [currentEpisodeIndex, detail]);
+*/-----------原来的--------------
   // 清理定时器
   useEffect(() => {
     return () => {
