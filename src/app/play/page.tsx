@@ -1526,6 +1526,7 @@ useEffect(() => {
         resumeTimeRef.current = null;
       }, 1000);
         }
+     } 
         //resumeTimeRef.current = null;-----原来的------
 
         setTimeout(() => {
