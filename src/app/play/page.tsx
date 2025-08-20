@@ -743,11 +743,35 @@ function PlayPageClient() {
     initAll();
   }, []);
 
+  //-----------3.新添加-------------
+ // 确保播放器销毁时保存进度
+// 在播放器销毁前确保保存进度
+useEffect(() => {
+  return () => {
+    if (artPlayerRef.current) {
+      saveCurrentPlayProgress();
+      
+      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
+        artPlayerRef.current.video.hls.destroy();
+      }
+      
+      if (typeof artPlayerRef.current.destroy === 'function') {
+        artPlayerRef.current.destroy();
+      }
+    }
+    
+    if (saveIntervalRef.current) {
+      clearInterval(saveIntervalRef.current);
+    }
+  };
+}, []);//-----------3.新添加-------------
+  
   // 播放记录处理
   useEffect(() => {
-  if (!currentSource || !currentId) return;
+  //if (!currentSource || !currentId) return;------换到下面行---------原来的---------
     
   const initFromHistory = async () => {
+    if (!currentSource || !currentId) return;//--------改后的-------------
     try {
       const allRecords = await getAllPlayRecords();
       const key = generateStorageKey(currentSource, currentId);
@@ -759,6 +783,7 @@ function PlayPageClient() {
           setCurrentEpisodeIndex(targetIndex);
         }
         resumeTimeRef.current = targetTime;
+        console.log('加载播放记录:', targetTime);
       }
     } catch (err) {
       console.error('读取播放记录失败:', err);
@@ -1084,7 +1109,22 @@ function PlayPageClient() {
     const handleVisibilityChange = () => {
       if (document.visibilityState === 'hidden') {
         saveCurrentPlayProgress();
+      }else if (document.visibilityState === 'visible') {//---------新添加开始-----------
+      // 页面重新可见时，重新检查播放进度
+      if (currentSource && currentId) {
+        getAllPlayRecords().then(allRecords => {
+          const key = generateStorageKey(currentSource, currentId);
+          const record = allRecords[key];
+          if (record && artPlayerRef.current) {
+            // 如果播放器存在且当前时间与记录相差较大，恢复进度
+            const currentTime = artPlayerRef.current.currentTime || 0;
+            if (Math.abs(currentTime - record.play_time) > 30) {
+              artPlayerRef.current.currentTime = record.play_time;
+            }
+          }
+        });
       }
+    }//---------新添加到这里-----------
      
     };
 
@@ -1097,7 +1137,7 @@ function PlayPageClient() {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       document.removeEventListener('visibilitychange', handleVisibilityChange);
     };
-  }, []);
+  }, [currentSource, currentId]);//-----------新添加两个currentSource, currentId---------------------------
 
   // 清理定时器
   useEffect(() => {
@@ -1209,7 +1249,7 @@ function PlayPageClient() {
       typeof (window as any).webkitConvertPointFromNodeToPage === 'function';
 
     // 非WebKit浏览器且播放器已存在，使用switch方法切换
-   /* 
+    
    if (!isWebkit && artPlayerRef.current) {
       artPlayerRef.current.switch = videoUrl;
       artPlayerRef.current.title = `${videoTitle} - 第${
@@ -1224,7 +1264,7 @@ function PlayPageClient() {
       }
       return;
     }
-    */
+    
     // WebKit浏览器或首次创建：销毁之前的播放器实例并创建新的
     if (artPlayerRef.current) {
       if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
@@ -1466,13 +1506,27 @@ function PlayPageClient() {
             if (duration && target >= duration - 2) {
               target = Math.max(0, duration - 5);
             }
+            //--------原来的---------------
             artPlayerRef.current.currentTime = target;
             console.log('成功恢复播放进度到:', resumeTimeRef.current);
+            //--------原来的---------------
+            // 添加延迟确保播放器完全准备好-----改后---------
+      setTimeout(() => {
+        if (artPlayerRef.current) {
+          artPlayerRef.current.currentTime = target;
+          console.log('成功恢复播放进度到:', target);
+        }
+      }, 1000);
+            //-----改后---------
           } catch (err) {
             console.warn('恢复播放进度失败:', err);
-          }
-        }
+          }finally {
+      // 只在成功或失败后清除，不要提前清除------改后的-------
+      setTimeout(() => {
         resumeTimeRef.current = null;
+      }, 1000);
+        }
+        //resumeTimeRef.current = null;-----原来的------
 
         setTimeout(() => {
           if (
@@ -1594,21 +1648,7 @@ function PlayPageClient() {
       if (saveIntervalRef.current) {
         clearInterval(saveIntervalRef.current);
       }
-      //测试-----------------------------------------
-      if (artPlayerRef.current) {
-      // 销毁 HLS 实例
-      if (artPlayerRef.current.video && artPlayerRef.current.video.hls) {
-        artPlayerRef.current.video.hls.destroy();
-        console.log('HLS 实例已销毁');
-      }
-
-      // 销毁播放器实例
-      artPlayerRef.current.destroy();
-      console.log('ArtPlayer 实例已销毁');
-      artPlayerRef.current = null;
-    }
     };
-    //测试-----------------------------------------
   }, []);
 
   if (loading) {
