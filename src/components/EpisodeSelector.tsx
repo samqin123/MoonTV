@@ -416,7 +416,7 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
             })().map((episodeNumber) => {
               const isActive = episodeNumber === value;
 			 {/* -------开始-------正则匹配显示剧集名称 */}
-			  let episodeLabel = episodeNumber;
+			  let episodeLabel = string | number;
 
   {/*  计算当前集在源 episodes 列表中的索引 */}
   const episodeIndex = episodeNumber - 1;
