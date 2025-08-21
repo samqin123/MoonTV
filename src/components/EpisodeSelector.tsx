@@ -415,10 +415,10 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
               return episodes;
             })().map((episodeNumber) => {
               const isActive = episodeNumber === value;
-			    //-------开始-------正则匹配显示剧集名称
+			 {/* -------开始-------正则匹配显示剧集名称 */}
 			  let episodeLabel = episodeNumber;
 
-  // 计算当前集在源 episodes 列表中的索引
+  {/*  计算当前集在源 episodes 列表中的索引 */}
   const episodeIndex = episodeNumber - 1;
   if (
     currentSourceObj &&
@@ -431,7 +431,7 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
       episodeLabel = name;
     }
   }
-				//--------到这里--------
+				{/* -------到这里-------- */}
               return (
                 <button
                   key={episodeNumber}
@@ -443,8 +443,8 @@ const EpisodeSelector: React.FC<EpisodeSelectorProps> = ({
                         : 'bg-gray-200 text-gray-700 hover:bg-gray-300 hover:scale-105 dark:bg-white/10 dark:text-gray-300 dark:hover:bg-white/20'
                     }`.trim()}
                 >
-                  //{episodeNumber}原来的------------
-				  {episodeLabel}//改后的------------
+                  {/* //{episodeNumber}--------原来的----------- */}
+				  {episodeLabel}{/* -----改后的------ */}
                 </button>
               );
             })}
