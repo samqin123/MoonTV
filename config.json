@@ -81,8 +81,8 @@
     "ikun": {
       "api": "https://ikunzyapi.com/api.php/provide/vod",
       "name": "iKun资源"
-    }
-  "ckzy": {
+    },
+  		"ckzy": {
       "api": "https://ckzy.me/api.php/provide/vod/",
       "name": "ck资源",
       "detail": "https://ckzy.me"
