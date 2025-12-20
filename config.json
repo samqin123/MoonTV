@@ -6,6 +6,11 @@
       "name": "电影天堂资源",
       "detail": "http://caiji.dyttzyapi.com"
     },
+    "jpys":{
+      "api": "http://m.ghw9zwp5.com/api.php/provide/vod",
+      "name": "金牌影视",
+      "detail": "https://m.ghw9zwp5.com"
+    },
     "heimuer": {
       "api": "https://json.heimuer.xyz/api.php/provide/vod",
       "name": "黑木耳",
