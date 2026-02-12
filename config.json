@@ -1,0 +1,62 @@
+{
+  "cache_time": 7200,
+  "api_site": {
+    "ddys": {
+      "api": "https://ddys.pro/api.php/provide/vod/",
+      "name": "低端影视"
+    },
+    "jubaibai": {
+      "api": "https://ju8.cc/api.php/provide/vod/",
+      "name": "剧白白"
+    },
+    "aikan": {
+      "api": "https://ikan6.vip/api.php/provide/vod/",
+      "name": "爱看影视"
+    },
+    "zuid": {
+      "api": "https://api.zuidapi.com/api.php/provide/vod",
+      "name": "最大资源"
+    },
+    "lzzy": {
+      "api": "https://cj.lziapi.com/api.php/provide/vod/",
+      "name": "量子资源",
+      "detail": "https://cj.lziapi.com"
+    },
+    "suonizy": {
+      "api": "https://suoniapi.com/api.php/provide/vod/",
+      "name": "索尼资源",
+      "detail": "https://suoniapi.com"
+    },
+    "hongniuzy": {
+      "api": "https://www.hongniuzy2.com/api.php/provide/vod/",
+      "name": "红牛资源",
+      "detail": "https://www.hongniuzy2.com"
+    },
+    "tiankongzy": {
+      "api": "https://api.tiankongapi.com/api.php/provide/vod/",
+      "name": "天空资源",
+      "detail": "https://api.tiankongapi.com"
+    },
+    "xinshijue": {
+      "api": "https://www.6080dy3.com/api.php/provide/vod/",
+      "name": "新视觉影院"
+    },
+    "rebo": {
+      "api": "https://rebozj.pro/api.php/provide/vod/",
+      "name": "热播库"
+    },
+    "qiqi": {
+      "api": "https://www.77kan.cc/api.php/provide/vod/",
+      "name": "七七影视"
+    },
+    "meiju": {
+      "api": "https://meijufan.net/api.php/provide/vod/",
+      "name": "美剧范"
+    },
+    "wujinzy": {
+      "api": "https://api.wujinapi.com/api.php/provide/vod/",
+      "name": "无尽资源",
+      "detail": "https://api.wujinapi.com"
+    }
+  }
+}
