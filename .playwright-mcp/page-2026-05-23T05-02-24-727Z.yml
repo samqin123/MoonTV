@@ -1,0 +1,334 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e12]
+  - generic [ref=e17]:
+    - complementary [ref=e19]:
+      - generic [ref=e21]:
+        - generic [ref=e22]:
+          - link "Vision TV Vision TV" [ref=e24] [cursor=pointer]:
+            - /url: /
+            - img "Vision TV" [ref=e25]
+            - generic [ref=e26]: Vision TV
+          - button [ref=e27] [cursor=pointer]:
+            - img [ref=e28]
+        - navigation [ref=e29]:
+          - link "首页" [ref=e30] [cursor=pointer]:
+            - /url: /
+            - img [ref=e32]
+            - generic [ref=e35]: 首页
+          - link "搜索" [ref=e36] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e38]
+            - generic [ref=e41]: 搜索
+        - generic [ref=e43]:
+          - link "电影" [ref=e44] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e46]
+            - generic [ref=e48]: 电影
+          - link "剧集" [ref=e49] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e51]
+            - generic [ref=e54]: 剧集
+          - link "综艺" [ref=e55] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e57]
+            - generic [ref=e61]: 综艺
+    - generic [ref=e62]:
+      - generic [ref=e63]:
+        - button "Toggle theme" [ref=e64] [cursor=pointer]:
+          - img [ref=e65]
+        - button "User Menu" [ref=e68] [cursor=pointer]:
+          - img [ref=e69]
+      - main [ref=e72]:
+        - generic [ref=e73]:
+          - generic [ref=e76]:
+            - img [ref=e77]
+            - textbox "搜索电影、电视剧..." [ref=e80]: 庆余年
+          - generic [ref=e82]:
+            - generic [ref=e83]:
+              - generic [ref=e84]:
+                - heading "搜索结果" [level=2] [ref=e85]
+                - paragraph [ref=e86]: 已返回 50 个结果，正在继续搜索 19/20 个源
+              - generic [ref=e87] [cursor=pointer]:
+                - generic [ref=e88]: 聚合
+                - checkbox "聚合" [checked] [ref=e90]
+            - generic [ref=e93]:
+              - generic [ref=e95] [cursor=pointer]:
+                - generic [ref=e96]:
+                  - img "庆余年" [ref=e98]
+                  - img [ref=e101]
+                  - generic [ref=e104]: "46"
+                  - link [ref=e105]:
+                    - /url: https://movie.douban.com/subject/25853071
+                    - img [ref=e107]
+                - generic [ref=e110]:
+                  - generic [ref=e112]: 庆余年
+                  - generic [ref=e113]:
+                    - generic [ref=e114]: "2019"
+                    - generic [ref=e115]: 剧集
+                    - generic [ref=e116]: 46集
+                    - generic [ref=e117]: 1源
+                  - generic [ref=e119]: 魔都资源
+              - generic [ref=e121] [cursor=pointer]:
+                - generic [ref=e122]:
+                  - img "庆余年 第一季" [ref=e124]
+                  - img [ref=e127]
+                  - generic [ref=e130]: "46"
+                  - link [ref=e131]:
+                    - /url: https://movie.douban.com/subject/25853071
+                    - img [ref=e133]
+                - generic [ref=e136]:
+                  - generic [ref=e138]: 庆余年 第一季
+                  - generic [ref=e139]:
+                    - generic [ref=e140]: "2019"
+                    - generic [ref=e141]: 剧集
+                    - generic [ref=e142]: 46集
+                    - generic [ref=e143]: 10源
+                  - generic [ref=e145]: 暴风资源
+              - generic [ref=e147] [cursor=pointer]:
+                - generic [ref=e148]:
+                  - img "庆余年第二季粤语" [ref=e150]
+                  - img [ref=e153]
+                  - generic [ref=e156]: "31"
+                  - link [ref=e157]:
+                    - /url: https://movie.douban.com/subject/34937650
+                    - img [ref=e159]
+                - generic [ref=e162]:
+                  - generic [ref=e164]: 庆余年第二季粤语
+                  - generic [ref=e165]:
+                    - generic [ref=e166]: "2024"
+                    - generic [ref=e167]: 剧集
+                    - generic [ref=e168]: 31集
+                    - generic [ref=e169]: 3源
+                  - generic [ref=e171]: 暴风资源
+              - generic [ref=e173] [cursor=pointer]:
+                - generic [ref=e174]:
+                  - img "庆余年第二季" [ref=e176]
+                  - img [ref=e179]
+                  - generic [ref=e182]: "36"
+                  - link [ref=e183]:
+                    - /url: https://movie.douban.com/subject/34937650
+                    - img [ref=e185]
+                - generic [ref=e188]:
+                  - generic [ref=e190]: 庆余年第二季
+                  - generic [ref=e191]:
+                    - generic [ref=e192]: "2024"
+                    - generic [ref=e193]: 剧集
+                    - generic [ref=e194]: 36集
+                    - generic [ref=e195]: 8源
+                  - generic [ref=e197]: 最大资源
+              - generic [ref=e199] [cursor=pointer]:
+                - generic [ref=e200]:
+                  - img "庆余年第一季特别版" [ref=e202]
+                  - img [ref=e205]
+                  - generic [ref=e208]: "25"
+                  - link [ref=e209]:
+                    - /url: https://movie.douban.com/subject/25853071
+                    - img [ref=e211]
+                - generic [ref=e214]:
+                  - generic [ref=e216]: 庆余年第一季特别版
+                  - generic [ref=e217]:
+                    - generic [ref=e218]: "2019"
+                    - generic [ref=e219]: 剧集
+                    - generic [ref=e220]: 25集
+                    - generic [ref=e221]: 2源
+                  - generic [ref=e223]: 360资源
+              - generic [ref=e225] [cursor=pointer]:
+                - generic [ref=e226]:
+                  - img "庆余年之帝王业" [ref=e228]
+                  - img [ref=e231]
+                  - link [ref=e234]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e236]
+                - generic [ref=e239]:
+                  - generic [ref=e241]: 庆余年之帝王业
+                  - generic [ref=e242]:
+                    - generic [ref=e243]: "2024"
+                    - generic [ref=e244]: 电影
+                    - generic [ref=e245]: 1源
+                  - generic [ref=e247]: 暴风资源
+              - generic [ref=e249] [cursor=pointer]:
+                - generic [ref=e250]:
+                  - img "庆余年之风起沧州" [ref=e252]
+                  - img [ref=e255]
+                  - link [ref=e258]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e260]
+                - generic [ref=e263]:
+                  - generic [ref=e265]: 庆余年之风起沧州
+                  - generic [ref=e266]:
+                    - generic [ref=e267]: "2024"
+                    - generic [ref=e268]: 电影
+                    - generic [ref=e269]: 1源
+                  - generic [ref=e271]: 最大资源
+              - generic [ref=e273] [cursor=pointer]:
+                - generic [ref=e274]:
+                  - img "庆余年之少年风流" [ref=e276]
+                  - img [ref=e279]
+                  - link [ref=e282]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e284]
+                - generic [ref=e287]:
+                  - generic [ref=e289]: 庆余年之少年风流
+                  - generic [ref=e290]:
+                    - generic [ref=e291]: "2024"
+                    - generic [ref=e292]: 电影
+                    - generic [ref=e293]: 1源
+                  - generic [ref=e295]: 最大资源
+              - generic [ref=e297] [cursor=pointer]:
+                - generic [ref=e298]:
+                  - img "庆余年第一季特别版" [ref=e299]
+                  - img [ref=e302]
+                  - generic [ref=e305]: "25"
+                  - link [ref=e306]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e308]
+                - generic [ref=e311]:
+                  - generic [ref=e313]: 庆余年第一季特别版
+                  - generic [ref=e314]:
+                    - generic [ref=e315]: "2024"
+                    - generic [ref=e316]: 剧集
+                    - generic [ref=e317]: 25集
+                    - generic [ref=e318]: 2源
+                  - generic [ref=e320]: 暴风资源
+              - generic [ref=e322] [cursor=pointer]:
+                - generic [ref=e323]:
+                  - img "庆余年之大赵逍遥王" [ref=e325]
+                  - img [ref=e328]
+                  - link [ref=e331]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e333]
+                - generic [ref=e336]:
+                  - generic [ref=e338]: 庆余年之大赵逍遥王
+                  - generic [ref=e339]:
+                    - generic [ref=e340]: "2024"
+                    - generic [ref=e341]: 电影
+                    - generic [ref=e342]: 1源
+                  - generic [ref=e344]: 最大资源
+              - generic [ref=e346] [cursor=pointer]:
+                - generic [ref=e347]:
+                  - img "庆余年之大赵逍遥王" [ref=e349]
+                  - img [ref=e352]
+                  - generic [ref=e355]: "88"
+                  - link [ref=e356]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e358]
+                - generic [ref=e361]:
+                  - generic [ref=e363]: 庆余年之大赵逍遥王
+                  - generic [ref=e364]:
+                    - generic [ref=e365]: "2024"
+                    - generic [ref=e366]: 剧集
+                    - generic [ref=e367]: 88集
+                    - generic [ref=e368]: 2源
+                  - generic [ref=e370]: 暴风资源
+              - generic [ref=e372] [cursor=pointer]:
+                - generic [ref=e373]:
+                  - img "庆余年第一季特别篇" [ref=e374]
+                  - img [ref=e377]
+                  - generic [ref=e380]: "25"
+                  - link [ref=e381]:
+                    - /url: https://movie.douban.com/subject/25853071
+                    - img [ref=e383]
+                - generic [ref=e386]:
+                  - generic [ref=e388]: 庆余年第一季特别篇
+                  - generic [ref=e389]:
+                    - generic [ref=e390]: "2024"
+                    - generic [ref=e391]: 剧集
+                    - generic [ref=e392]: 25集
+                    - generic [ref=e393]: 1源
+                  - generic [ref=e395]: 非凡影视
+              - generic [ref=e397] [cursor=pointer]:
+                - generic [ref=e398]:
+                  - img "庆余年之帝王业" [ref=e400]
+                  - img [ref=e403]
+                  - generic [ref=e406]: "52"
+                  - link [ref=e407]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e409]
+                - generic [ref=e412]:
+                  - generic [ref=e414]: 庆余年之帝王业
+                  - generic [ref=e415]:
+                    - generic [ref=e416]: "2024"
+                    - generic [ref=e417]: 剧集
+                    - generic [ref=e418]: 52集
+                    - generic [ref=e419]: 4源
+                  - generic [ref=e421]: 茅台资源
+              - generic [ref=e423] [cursor=pointer]:
+                - generic [ref=e424]:
+                  - img "庆余年之风起沧州" [ref=e426]
+                  - img [ref=e429]
+                  - generic [ref=e432]: "74"
+                  - link [ref=e433]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e435]
+                - generic [ref=e438]:
+                  - generic [ref=e440]: 庆余年之风起沧州
+                  - generic [ref=e441]:
+                    - generic [ref=e442]: "2024"
+                    - generic [ref=e443]: 剧集
+                    - generic [ref=e444]: 74集
+                    - generic [ref=e445]: 6源
+                  - generic [ref=e447]: 茅台资源
+              - generic [ref=e449] [cursor=pointer]:
+                - generic [ref=e450]:
+                  - img "庆余年之少年风流" [ref=e452]
+                  - img [ref=e455]
+                  - generic [ref=e458]: "75"
+                  - link [ref=e459]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e461]
+                - generic [ref=e464]:
+                  - generic [ref=e466]: 庆余年之少年风流
+                  - generic [ref=e467]:
+                    - generic [ref=e468]: "2024"
+                    - generic [ref=e469]: 剧集
+                    - generic [ref=e470]: 75集
+                    - generic [ref=e471]: 4源
+                  - generic [ref=e473]: 茅台资源
+              - generic [ref=e475] [cursor=pointer]:
+                - generic [ref=e476]:
+                  - img "庆余年，全世界都以为我是废物太子$庆余年之大凉太子爷" [ref=e478]
+                  - img [ref=e481]
+                  - link [ref=e484]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e486]
+                - generic [ref=e489]:
+                  - generic [ref=e491]: 庆余年，全世界都以为我是废物太子$庆余年之大凉太子爷
+                  - generic [ref=e492]:
+                    - generic [ref=e493]: "2024"
+                    - generic [ref=e494]: 电影
+                    - generic [ref=e495]: 1源
+                  - generic [ref=e497]: 最大资源
+              - generic [ref=e499] [cursor=pointer]:
+                - generic [ref=e500]:
+                  - img "庆余年，全世界都以为我是废物太子" [ref=e502]
+                  - img [ref=e505]
+                  - generic [ref=e508]: "81"
+                  - link [ref=e509]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e511]
+                - generic [ref=e514]:
+                  - generic [ref=e516]: 庆余年，全世界都以为我是废物太子
+                  - generic [ref=e517]:
+                    - generic [ref=e518]: "2024"
+                    - generic [ref=e519]: 剧集
+                    - generic [ref=e520]: 81集
+                    - generic [ref=e521]: 1源
+                  - generic [ref=e523]: 暴风资源
+              - generic [ref=e525] [cursor=pointer]:
+                - generic [ref=e526]:
+                  - img "庆余年，全世界都以为我是废物太子（庆余年之大凉太子爷）" [ref=e528]
+                  - img [ref=e531]
+                  - generic [ref=e534]: "4"
+                  - link [ref=e535]:
+                    - /url: https://movie.douban.com/subject/undefined
+                    - img [ref=e537]
+                - generic [ref=e540]:
+                  - generic [ref=e542]: 庆余年，全世界都以为我是废物太子（庆余年之大凉太子爷）
+                  - generic [ref=e543]:
+                    - generic [ref=e544]: "2024"
+                    - generic [ref=e545]: 剧集
+                    - generic [ref=e546]: 4集
+                    - generic [ref=e547]: 1源
+                  - generic [ref=e549]: 茅台资源
+        - button "返回顶部":
+          - img

@@ -1,0 +1,94 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - button "Back" [ref=e6] [cursor=pointer]:
+          - img [ref=e7]
+        - generic [ref=e9]:
+          - button "Toggle theme" [ref=e70] [cursor=pointer]:
+            - img [ref=e71]
+          - button "User Menu" [ref=e12] [cursor=pointer]:
+            - img [ref=e13]
+      - link "Vision TV Vision TV" [ref=e17] [cursor=pointer]:
+        - /url: /
+        - img "Vision TV" [ref=e18]
+        - text: Vision TV
+    - main [ref=e21]:
+      - generic [ref=e22]:
+        - heading "庆余年 > 第 1 集" [level=1] [ref=e73]
+        - generic [ref=e75]:
+          - generic [ref=e77]:
+            - generic [ref=e79]:
+              - generic [ref=e84]:
+                - generic [ref=e85]:
+                  - generic "播放" [ref=e87] [cursor=pointer]:
+                    - img [ref=e88]
+                  - generic "播放下一集" [ref=e90] [cursor=pointer]:
+                    - img [ref=e92]
+                  - generic [ref=e94]: 00:00 / 00:00
+                - generic [ref=e95]:
+                  - generic "显示设置" [ref=e96] [cursor=pointer]:
+                    - img [ref=e98]
+                  - generic "全屏" [ref=e101] [cursor=pointer]:
+                    - img [ref=e103]
+              - generic:
+                - generic:
+                  - img
+            - generic [ref=e105]: 魔都资源 不可用，请在换源列表手动切换。
+          - generic [ref=e107]:
+            - generic [ref=e108]:
+              - generic [ref=e109] [cursor=pointer]: 选集
+              - generic [ref=e110] [cursor=pointer]: 换源
+            - generic [ref=e180]:
+              - generic [ref=e181]:
+                - img "庆余年" [ref=e183]
+                - generic [ref=e184]:
+                  - generic [ref=e185]:
+                    - heading "庆余年" [level=3] [ref=e187]
+                    - generic [ref=e188]: 检测失败
+                  - generic [ref=e189]:
+                    - generic [ref=e190]:
+                      - generic [ref=e191]: 魔都资源
+                      - generic [ref=e192]: 当前源
+                    - generic [ref=e193]: 46 集
+                  - generic [ref=e195]: 无测速数据
+              - button "影片匹配有误？点击去搜索" [ref=e197] [cursor=pointer]
+        - generic [ref=e168]:
+          - heading "庆余年" [level=1] [ref=e169]:
+            - text: 庆余年
+            - button [ref=e170] [cursor=pointer]:
+              - img [ref=e171]
+          - generic [ref=e173]:
+            - generic [ref=e174]: 剧情,古装
+            - generic [ref=e175]: "2019"
+            - generic [ref=e176]: 魔都资源
+            - generic [ref=e177]: 国产剧
+          - generic [ref=e178]: 某大学文学史专业的学生张庆熟读古典名著，但他用现代观念剖析古代文学史的论文命题不被叶教授所认可。为了让叶教授成为自己的研究生导师，张庆决定通过写小说的方式，进一步阐述自己想要表达的观点。在他的小说中，身世神秘的少年——范闲，自小跟随奶奶生活在海边小城澹州，随着一位老师的突然造访，他看似平静的生活开始直面重重的危机与考验。在神秘老师和一位蒙眼守护者的指点下，范闲熟识药性药理，修炼霸道真气并精进武艺，而后接连化解了诸多危局。因对身世之谜的好奇，范闲离开澹州，前赴京都。在京都，范闲凭借过人的智谋与勇武成为年轻一代的佼佼者，他先以诗文冠绝京都，而后出使邻国，营救人质，整合谍报网，查处震动朝野的走私案……这个过程中，范闲饱尝人间冷暖并坚守对正义、良善的坚持，历经家族、江湖、庙堂的种种考验与锤炼，书写了光彩的人生传奇。
+    - navigation [ref=e37]:
+      - list [ref=e38]:
+        - listitem [ref=e39]:
+          - link "首页" [ref=e40] [cursor=pointer]:
+            - /url: /
+            - img [ref=e41]
+            - generic [ref=e44]: 首页
+        - listitem [ref=e45]:
+          - link "搜索" [ref=e46] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e47]
+            - generic [ref=e50]: 搜索
+        - listitem [ref=e51]:
+          - link "电影" [ref=e52] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e53]
+            - generic [ref=e55]: 电影
+        - listitem [ref=e56]:
+          - link "剧集" [ref=e57] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e58]
+            - generic [ref=e61]: 剧集
+        - listitem [ref=e62]:
+          - link "综艺" [ref=e63] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e64]
+            - generic [ref=e68]: 综艺
+  - alert [ref=e69]

@@ -1,0 +1,541 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e5]:
+        - button "Toggle theme" [ref=e59] [cursor=pointer]:
+          - img [ref=e60]
+        - button "User Menu" [ref=e8] [cursor=pointer]:
+          - img [ref=e9]
+      - link "Vision TV Vision TV" [ref=e13] [cursor=pointer]:
+        - /url: /
+        - img "Vision TV" [ref=e14]
+        - text: Vision TV
+    - main [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e21]:
+          - img [ref=e22]
+          - textbox "搜索电影、电视剧..." [ref=e25]: 龙族
+        - generic [ref=e63]:
+          - generic [ref=e64]:
+            - generic [ref=e65]:
+              - heading "搜索结果" [level=2] [ref=e66]
+              - paragraph [ref=e67]: 已完成 20 个源，当前显示 67 个结果
+            - generic [ref=e68] [cursor=pointer]:
+              - generic [ref=e69]: 聚合
+              - checkbox "聚合" [checked] [ref=e71]
+          - generic [ref=e74]:
+            - generic [ref=e76] [cursor=pointer]:
+              - generic [ref=e77]:
+                - img "龙族" [ref=e79]
+                - img [ref=e82]
+                - generic [ref=e85]: "16"
+                - link [ref=e86]:
+                  - /url: https://movie.douban.com/subject/35170003
+                  - img [ref=e88]
+              - generic [ref=e91]:
+                - generic [ref=e93]: 龙族
+                - generic [ref=e94]:
+                  - generic [ref=e95]: "2022"
+                  - generic [ref=e96]: 剧集
+                  - generic [ref=e97]: 16集
+                  - generic [ref=e98]: 9源
+                - generic [ref=e100]: 360资源
+            - generic [ref=e102] [cursor=pointer]:
+              - generic [ref=e103]:
+                - img "龙族少年" [ref=e105]
+                - img [ref=e108]
+                - link [ref=e111]:
+                  - /url: https://movie.douban.com/subject/30394676
+                  - img [ref=e113]
+              - generic [ref=e116]:
+                - generic [ref=e118]: 龙族少年
+                - generic [ref=e119]:
+                  - generic [ref=e120]: "2018"
+                  - generic [ref=e121]: 电影
+                  - generic [ref=e122]: 5源
+                - generic [ref=e124]: 暴风资源
+            - generic [ref=e126] [cursor=pointer]:
+              - generic [ref=e127]:
+                - img "龙族 第二季" [ref=e129]
+                - img [ref=e132]
+                - generic [ref=e135]: "24"
+                - link [ref=e136]:
+                  - /url: https://movie.douban.com/subject/36516641
+                  - img [ref=e138]
+              - generic [ref=e141]:
+                - generic [ref=e143]: 龙族 第二季
+                - generic [ref=e144]:
+                  - generic [ref=e145]: "2025"
+                  - generic [ref=e146]: 剧集
+                  - generic [ref=e147]: 24集
+                  - generic [ref=e148]: 10源
+                - generic [ref=e150]: 茅台资源
+            - generic [ref=e152] [cursor=pointer]:
+              - generic [ref=e153]:
+                - img "龙族 第一季" [ref=e155]
+                - img [ref=e158]
+                - generic [ref=e161]: "16"
+                - link [ref=e162]:
+                  - /url: https://movie.douban.com/subject/35170003
+                  - img [ref=e164]
+              - generic [ref=e167]:
+                - generic [ref=e169]: 龙族 第一季
+                - generic [ref=e170]:
+                  - generic [ref=e171]: "2022"
+                  - generic [ref=e172]: 剧集
+                  - generic [ref=e173]: 16集
+                  - generic [ref=e174]: 2源
+                - generic [ref=e176]: 360资源
+            - generic [ref=e178] [cursor=pointer]:
+              - generic [ref=e179]:
+                - img "龙族日语版" [ref=e181]
+                - img [ref=e184]
+                - generic [ref=e187]: "16"
+                - link [ref=e188]:
+                  - /url: https://movie.douban.com/subject/35170003
+                  - img [ref=e190]
+              - generic [ref=e193]:
+                - generic [ref=e195]: 龙族日语版
+                - generic [ref=e196]:
+                  - generic [ref=e197]: "2022"
+                  - generic [ref=e198]: 剧集
+                  - generic [ref=e199]: 16集
+                  - generic [ref=e200]: 2源
+                - generic [ref=e202]: 暴风资源
+            - generic [ref=e204] [cursor=pointer]:
+              - generic [ref=e205]:
+                - img "龙族2024" [ref=e207]
+                - img [ref=e210]
+                - generic [ref=e213]: "16"
+                - link [ref=e214]:
+                  - /url: https://movie.douban.com/subject/36516641
+                  - img [ref=e216]
+              - generic [ref=e219]:
+                - generic [ref=e221]: 龙族2024
+                - generic [ref=e222]:
+                  - generic [ref=e223]: "2024"
+                  - generic [ref=e224]: 剧集
+                  - generic [ref=e225]: 16集
+                  - generic [ref=e226]: 1源
+                - generic [ref=e228]: 魔都资源
+            - generic [ref=e230] [cursor=pointer]:
+              - generic [ref=e231]:
+                - img "龙族往事" [ref=e233]
+                - img [ref=e236]
+                - link [ref=e239]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e241]
+              - generic [ref=e244]:
+                - generic [ref=e246]: 龙族往事
+                - generic [ref=e247]:
+                  - generic [ref=e248]: "2024"
+                  - generic [ref=e249]: 电影
+                  - generic [ref=e250]: 1源
+                - generic [ref=e252]: 最大资源
+            - generic [ref=e254] [cursor=pointer]:
+              - generic [ref=e255]:
+                - img "龙族弃少" [ref=e257]
+                - img [ref=e260]
+                - generic [ref=e263]: "5"
+                - link [ref=e264]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e266]
+              - generic [ref=e269]:
+                - generic [ref=e271]: 龙族弃少
+                - generic [ref=e272]:
+                  - generic [ref=e273]: "2023"
+                  - generic [ref=e274]: 剧集
+                  - generic [ref=e275]: 5集
+                  - generic [ref=e276]: 3源
+                - generic [ref=e278]: 无尽资源
+            - generic [ref=e280] [cursor=pointer]:
+              - generic [ref=e281]:
+                - img "龙族新娘" [ref=e283]
+                - img [ref=e286]
+                - generic [ref=e289]: "30"
+                - link [ref=e290]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e292]
+              - generic [ref=e295]:
+                - generic [ref=e297]: 龙族新娘
+                - generic [ref=e298]:
+                  - generic [ref=e299]: "2023"
+                  - generic [ref=e300]: 剧集
+                  - generic [ref=e301]: 30集
+                  - generic [ref=e302]: 5源
+                - generic [ref=e304]: 暴风资源
+            - generic [ref=e306] [cursor=pointer]:
+              - generic [ref=e307]:
+                - img "龙族新娘" [ref=e309]
+                - img [ref=e312]
+                - generic [ref=e315]: "18"
+                - link [ref=e316]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e318]
+              - generic [ref=e321]:
+                - generic [ref=e323]: 龙族新娘
+                - generic [ref=e324]:
+                  - generic [ref=e325]: "2020"
+                  - generic [ref=e326]: 剧集
+                  - generic [ref=e327]: 18集
+                  - generic [ref=e328]: 1源
+                - generic [ref=e330]: 茅台资源
+            - generic [ref=e332] [cursor=pointer]:
+              - generic [ref=e333]:
+                - img "龙族 特別篇" [ref=e335]
+                - img [ref=e338]
+                - link [ref=e341]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e343]
+              - generic [ref=e346]:
+                - generic [ref=e348]: 龙族 特別篇
+                - generic [ref=e349]:
+                  - generic [ref=e350]: "2022"
+                  - generic [ref=e351]: 电影
+                  - generic [ref=e352]: 1源
+                - generic [ref=e354]: 茅台资源
+            - generic [ref=e356] [cursor=pointer]:
+              - generic [ref=e357]:
+                - img "龙族：救援骑士：寻找黄金龙" [ref=e359]
+                - img [ref=e362]
+                - link [ref=e365]:
+                  - /url: https://movie.douban.com/subject/35011305
+                  - img [ref=e367]
+              - generic [ref=e370]:
+                - generic [ref=e372]: 龙族：救援骑士：寻找黄金龙
+                - generic [ref=e373]:
+                  - generic [ref=e374]: "2020"
+                  - generic [ref=e375]: 电影
+                  - generic [ref=e376]: 3源
+                - generic [ref=e378]: 量子资源站
+            - generic [ref=e380] [cursor=pointer]:
+              - generic [ref=e381]:
+                - img "龙族：救援骑士：赫斯佳乐佳节" [ref=e383]
+                - img [ref=e386]
+                - link [ref=e389]:
+                  - /url: https://movie.douban.com/subject/35239057
+                  - img [ref=e391]
+              - generic [ref=e394]:
+                - generic [ref=e396]: 龙族：救援骑士：赫斯佳乐佳节
+                - generic [ref=e397]:
+                  - generic [ref=e398]: "2020"
+                  - generic [ref=e399]: 电影
+                  - generic [ref=e400]: 2源
+                - generic [ref=e402]: 量子资源站
+            - generic [ref=e404] [cursor=pointer]:
+              - generic [ref=e405]:
+                - img "龙族：救援骑士 迷曲龙的秘密" [ref=e407]
+                - img [ref=e410]
+                - link [ref=e413]:
+                  - /url: https://movie.douban.com/subject/35155163
+                  - img [ref=e415]
+              - generic [ref=e418]:
+                - generic [ref=e420]: 龙族：救援骑士 迷曲龙的秘密
+                - generic [ref=e421]:
+                  - generic [ref=e422]: "2020"
+                  - generic [ref=e423]: 电影
+                  - generic [ref=e424]: 1源
+                - generic [ref=e426]: 茅台资源
+            - generic [ref=e428] [cursor=pointer]:
+              - generic [ref=e429]:
+                - img "龙族掌心脆皮崽" [ref=e431]
+                - img [ref=e434]
+                - link [ref=e437]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e439]
+              - generic [ref=e442]:
+                - generic [ref=e444]: 龙族掌心脆皮崽
+                - generic [ref=e445]:
+                  - generic [ref=e446]: "2026"
+                  - generic [ref=e447]: 电影
+                  - generic [ref=e448]: 1源
+                - generic [ref=e450]: 茅台资源
+            - generic [ref=e452] [cursor=pointer]:
+              - generic [ref=e453]:
+                - img "龙族弃少" [ref=e455]
+                - img [ref=e458]
+                - generic [ref=e461]: "94"
+                - link [ref=e462]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e464]
+              - generic [ref=e467]:
+                - generic [ref=e469]: 龙族弃少
+                - generic [ref=e470]:
+                  - generic [ref=e471]: "2024"
+                  - generic [ref=e472]: 剧集
+                  - generic [ref=e473]: 94集
+                  - generic [ref=e474]: 1源
+                - generic [ref=e476]: 旺旺短剧
+            - generic [ref=e478] [cursor=pointer]:
+              - generic [ref=e479]:
+                - img "驱魔龙族马小玲" [ref=e481]
+                - img [ref=e484]
+                - link [ref=e487]:
+                  - /url: https://movie.douban.com/subject/26680414
+                  - img [ref=e489]
+              - generic [ref=e492]:
+                - generic [ref=e494]: 驱魔龙族马小玲
+                - generic [ref=e495]:
+                  - generic [ref=e496]: "2025"
+                  - generic [ref=e497]: 电影
+                  - generic [ref=e498]: 1源
+                - generic [ref=e500]: 暴风资源
+            - generic [ref=e502] [cursor=pointer]:
+              - generic [ref=e503]:
+                - img "龙族弃少" [ref=e505]
+                - img [ref=e508]
+                - generic [ref=e511]: "94"
+                - link [ref=e512]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e514]
+              - generic [ref=e517]:
+                - generic [ref=e519]: 龙族弃少
+                - generic [ref=e520]:
+                  - generic [ref=e521]: 剧集
+                  - generic [ref=e522]: 94集
+                  - generic [ref=e523]: 1源
+                - generic [ref=e525]: 量子资源站
+            - generic [ref=e527] [cursor=pointer]:
+              - generic [ref=e528]:
+                - img "封神：龙族缘起第一季" [ref=e530]
+                - img [ref=e533]
+                - link [ref=e536]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e538]
+              - generic [ref=e541]:
+                - generic [ref=e543]: 封神：龙族缘起第一季
+                - generic [ref=e544]:
+                  - generic [ref=e545]: "2026"
+                  - generic [ref=e546]: 电影
+                  - generic [ref=e547]: 1源
+                - generic [ref=e549]: 无尽资源
+            - generic [ref=e551] [cursor=pointer]:
+              - generic [ref=e552]:
+                - img "全民御兽：我的契约兽只吃龙族" [ref=e554]
+                - img [ref=e557]
+                - generic [ref=e560]: "13"
+                - link [ref=e561]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e563]
+              - generic [ref=e566]:
+                - generic [ref=e568]: 全民御兽：我的契约兽只吃龙族
+                - generic [ref=e569]:
+                  - generic [ref=e570]: "2026"
+                  - generic [ref=e571]: 剧集
+                  - generic [ref=e572]: 13集
+                  - generic [ref=e573]: 2源
+                - generic [ref=e575]: 360资源
+            - generic [ref=e577] [cursor=pointer]:
+              - generic [ref=e578]:
+                - img "神宠时代：我有一个龙族编辑器" [ref=e579]
+                - img [ref=e582]
+                - link [ref=e585]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e587]
+              - generic [ref=e590]:
+                - generic [ref=e592]: 神宠时代：我有一个龙族编辑器
+                - generic [ref=e593]:
+                  - generic [ref=e594]: "2026"
+                  - generic [ref=e595]: 电影
+                  - generic [ref=e596]: 1源
+                - generic [ref=e598]: 无尽资源
+            - generic [ref=e600] [cursor=pointer]:
+              - generic [ref=e601]:
+                - img "驱魔龙族马小玲" [ref=e603]
+                - img [ref=e606]
+                - generic [ref=e609]: "2"
+                - link [ref=e610]:
+                  - /url: https://movie.douban.com/subject/26680414
+                  - img [ref=e612]
+              - generic [ref=e615]:
+                - generic [ref=e617]: 驱魔龙族马小玲
+                - generic [ref=e618]:
+                  - generic [ref=e619]: "2025"
+                  - generic [ref=e620]: 剧集
+                  - generic [ref=e621]: 2集
+                  - generic [ref=e622]: 2源
+                - generic [ref=e624]: 量子资源站
+            - generic [ref=e626] [cursor=pointer]:
+              - generic [ref=e627]:
+                - img "龙之家族第二季" [ref=e629]
+                - img [ref=e632]
+                - generic [ref=e635]: "8"
+                - link [ref=e636]:
+                  - /url: https://movie.douban.com/subject/36073279
+                  - img [ref=e638]
+              - generic [ref=e641]:
+                - generic [ref=e643]: 龙之家族第二季
+                - generic [ref=e644]:
+                  - generic [ref=e645]: "2024"
+                  - generic [ref=e646]: 剧集
+                  - generic [ref=e647]: 8集
+                  - generic [ref=e648]: 1源
+                - generic [ref=e650]: 暴风资源
+            - generic [ref=e652] [cursor=pointer]:
+              - generic [ref=e653]:
+                - img "龙之信条" [ref=e655]
+                - img [ref=e658]
+                - generic [ref=e661]: "7"
+                - link [ref=e662]:
+                  - /url: https://movie.douban.com/subject/30488634
+                  - img [ref=e664]
+              - generic [ref=e667]:
+                - generic [ref=e669]: 龙之信条
+                - generic [ref=e670]:
+                  - generic [ref=e671]: "2020"
+                  - generic [ref=e672]: 剧集
+                  - generic [ref=e673]: 7集
+                  - generic [ref=e674]: 1源
+                - generic [ref=e676]: 暴风资源
+            - generic [ref=e678] [cursor=pointer]:
+              - generic [ref=e679]:
+                - img "智龙迷城" [ref=e681]
+                - img [ref=e684]
+                - generic [ref=e687]: "147"
+                - link [ref=e688]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e690]
+              - generic [ref=e693]:
+                - generic [ref=e695]: 智龙迷城
+                - generic [ref=e696]:
+                  - generic [ref=e697]: "2018"
+                  - generic [ref=e698]: 剧集
+                  - generic [ref=e699]: 147集
+                  - generic [ref=e700]: 1源
+                - generic [ref=e702]: 量子资源站
+            - generic [ref=e704] [cursor=pointer]:
+              - generic [ref=e705]:
+                - img "智龙迷城X" [ref=e707]
+                - img [ref=e710]
+                - generic [ref=e713]: "89"
+                - link [ref=e714]:
+                  - /url: https://movie.douban.com/subject/undefined
+                  - img [ref=e716]
+              - generic [ref=e719]:
+                - generic [ref=e721]: 智龙迷城X
+                - generic [ref=e722]:
+                  - generic [ref=e723]: "2016"
+                  - generic [ref=e724]: 剧集
+                  - generic [ref=e725]: 89集
+                  - generic [ref=e726]: 1源
+                - generic [ref=e728]: 量子资源站
+            - generic [ref=e730] [cursor=pointer]:
+              - generic [ref=e731]:
+                - img "龙先生，想要买个家。" [ref=e733]
+                - img [ref=e736]
+                - generic [ref=e739]: "12"
+                - link [ref=e740]:
+                  - /url: https://movie.douban.com/subject/34854994
+                  - img [ref=e742]
+              - generic [ref=e745]:
+                - generic [ref=e747]: 龙先生，想要买个家。
+                - generic [ref=e748]:
+                  - generic [ref=e749]: "2021"
+                  - generic [ref=e750]: 剧集
+                  - generic [ref=e751]: 12集
+                  - generic [ref=e752]: 2源
+                - generic [ref=e754]: 暴风资源
+            - generic [ref=e756] [cursor=pointer]:
+              - generic [ref=e757]:
+                - img "乌鸦" [ref=e759]
+                - img [ref=e762]
+                - link [ref=e765]:
+                  - /url: https://movie.douban.com/subject/3338853
+                  - img [ref=e767]
+              - generic [ref=e770]:
+                - generic [ref=e772]: 乌鸦
+                - generic [ref=e773]:
+                  - generic [ref=e774]: "2024"
+                  - generic [ref=e775]: 电影
+                  - generic [ref=e776]: 1源
+                - generic [ref=e778]: 暴风资源
+            - generic [ref=e780] [cursor=pointer]:
+              - generic [ref=e781]:
+                - img "彪悍战将" [ref=e783]
+                - img [ref=e786]
+                - generic [ref=e789]: "2"
+                - link [ref=e790]:
+                  - /url: https://movie.douban.com/subject/1304164
+                  - img [ref=e792]
+              - generic [ref=e795]:
+                - generic [ref=e797]: 彪悍战将
+                - generic [ref=e798]:
+                  - generic [ref=e799]: "1995"
+                  - generic [ref=e800]: 剧集
+                  - generic [ref=e801]: 2集
+                  - generic [ref=e802]: 1源
+                - generic [ref=e804]: 暴风资源
+            - generic [ref=e806] [cursor=pointer]:
+              - generic [ref=e807]:
+                - img "百炼成神3" [ref=e809]
+                - img [ref=e812]
+                - generic [ref=e815]: "22"
+                - link [ref=e816]:
+                  - /url: https://movie.douban.com/subject/37060846
+                  - img [ref=e818]
+              - generic [ref=e821]:
+                - generic [ref=e823]: 百炼成神3
+                - generic [ref=e824]:
+                  - generic [ref=e825]: "2025"
+                  - generic [ref=e826]: 剧集
+                  - generic [ref=e827]: 22集
+                  - generic [ref=e828]: 1源
+                - generic [ref=e830]: 量子资源站
+            - generic [ref=e832] [cursor=pointer]:
+              - generic [ref=e833]:
+                - img "乌鸦2024" [ref=e835]
+                - img [ref=e838]
+                - link [ref=e841]:
+                  - /url: https://movie.douban.com/subject/3338853
+                  - img [ref=e843]
+              - generic [ref=e846]:
+                - generic [ref=e848]: 乌鸦2024
+                - generic [ref=e849]:
+                  - generic [ref=e850]: "2024"
+                  - generic [ref=e851]: 电影
+                  - generic [ref=e852]: 1源
+                - generic [ref=e854]: 暴风资源
+            - generic [ref=e856] [cursor=pointer]:
+              - generic [ref=e857]:
+                - img "乌鸦1994" [ref=e859]
+                - img [ref=e862]
+                - link [ref=e865]:
+                  - /url: https://movie.douban.com/subject/1292474
+                  - img [ref=e867]
+              - generic [ref=e870]:
+                - generic [ref=e872]: 乌鸦1994
+                - generic [ref=e873]:
+                  - generic [ref=e874]: "1994"
+                  - generic [ref=e875]: 电影
+                  - generic [ref=e876]: 1源
+                - generic [ref=e878]: 量子资源站
+      - button "返回顶部":
+        - img
+    - navigation [ref=e26]:
+      - list [ref=e27]:
+        - listitem [ref=e28]:
+          - link "首页" [ref=e29] [cursor=pointer]:
+            - /url: /
+            - img [ref=e30]
+            - generic [ref=e33]: 首页
+        - listitem [ref=e34]:
+          - link "搜索" [ref=e35] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e36]
+            - generic [ref=e39]: 搜索
+        - listitem [ref=e40]:
+          - link "电影" [ref=e41] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e42]
+            - generic [ref=e44]: 电影
+        - listitem [ref=e45]:
+          - link "剧集" [ref=e46] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e47]
+            - generic [ref=e50]: 剧集
+        - listitem [ref=e51]:
+          - link "综艺" [ref=e52] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e53]
+            - generic [ref=e57]: 综艺
+  - alert [ref=e58]

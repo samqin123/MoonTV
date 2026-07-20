@@ -1,0 +1,2 @@
+[    5816ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559
+[    5846ms] [VERBOSE] [DOM] Password forms should have (optionally hidden) username fields for accessibility: (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login?redirect=%2F:0

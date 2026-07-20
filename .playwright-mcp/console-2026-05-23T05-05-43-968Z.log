@@ -1,0 +1,10 @@
+[     723ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559
+[     870ms] [LOG] %c ArtPlayer %c 5.2.3 %c https://artplayer.org color: #fff; background: #5f5f5f color: #fff; background: #4bc729  @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/artplayer@5.2.3/node_modules/artplayer/dist/artplayer.js:8
+[     941ms] [LOG] mdzy 16302 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:614
+[    1955ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1038
+[    2179ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1142
+[    2179ms] [LOG] 网络错误，尝试恢复... @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1148
+[    2179ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   31774ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/lABJThNi/index.m3u8:0
+[   31777ms] [ERROR] HLS错误: {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/lABJThNi/index.m3u8, loader: XhrLoader} @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/app-index.js:32
+[   31779ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/lABJThNi/index.m3u8:0

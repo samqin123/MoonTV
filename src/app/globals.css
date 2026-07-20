@@ -14,14 +14,20 @@
 }
 
 :root {
-  --foreground-rgb: 255, 255, 255;
+  --foreground-rgb: 17, 24, 39;
+  --neon: #5263ff;
+  --neon-rgb: 82, 99, 255;
+  --cyan: #4dc6fc;
+}
+
+html.dark {
+  --foreground-rgb: 229, 231, 235;
 }
 
 html,
 body {
   height: 100%;
   overflow-x: hidden;
-  /* 阻止 iOS Safari 拉动回弹 */
   overscroll-behavior: none;
 }
 
@@ -29,36 +35,87 @@ body {
   color: rgb(var(--foreground-rgb));
 }
 
+/* 亮色背景 - 柔和蓝白渐变 */
 html:not(.dark) body {
   background: linear-gradient(
     180deg,
-    #e6f3fb 0%,
-    #eaf3f7 18%,
-    #f7f7f3 38%,
-    #e9ecef 60%,
-    #dbe3ea 80%,
-    #d3dde6 100%
+    #f0f4ff 0%,
+    #f5f0ff 30%,
+    #fff8f0 60%,
+    #f0f4ff 100%
   );
   background-attachment: fixed;
 }
 
-/* 自定义滚动条样式 */
-::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* 暗色背景 */
+html.dark body {
+  background: linear-gradient(
+    180deg,
+    #0d0d12 0%,
+    #13131a 30%,
+    #0f0f16 60%,
+    #0a0a10 100%
+  );
+  background-attachment: fixed;
 }
 
-::-webkit-scrollbar-track {
-  background: rgba(31, 41, 55, 0.1);
+/* 顶部环境光 */
+html:not(.dark) main::before {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse,
+    rgba(82, 99, 255, 0.04) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
 }
 
-::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.3);
+html.dark main::before {
+  content: '';
+  position: fixed;
+  top: -200px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 400px;
+  background: radial-gradient(
+    ellipse,
+    rgba(82, 99, 255, 0.08) 0%,
+    transparent 70%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* 滚动条 - 亮色 */
+html:not(.dark) ::-webkit-scrollbar-track {
+  background: rgba(229, 231, 235, 0.5);
+}
+html:not(.dark) ::-webkit-scrollbar-thumb {
+  background: rgba(82, 99, 255, 0.2);
   border-radius: 4px;
 }
+html:not(.dark) ::-webkit-scrollbar-thumb:hover {
+  background: rgba(82, 99, 255, 0.4);
+}
 
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(107, 114, 128, 0.5);
+/* 滚动条 - 暗色 */
+html.dark ::-webkit-scrollbar-track {
+  background: rgba(49, 49, 54, 0.5);
+}
+html.dark ::-webkit-scrollbar-thumb {
+  background: rgba(82, 99, 255, 0.3);
+  border-radius: 4px;
+}
+html.dark ::-webkit-scrollbar-thumb:hover {
+  background: rgba(82, 99, 255, 0.6);
 }
 
 /* 视频卡片悬停效果 */
@@ -104,47 +161,24 @@ html:not(.dark) body {
 }
 
 /* View Transitions API 动画 */
-@keyframes slide-from-top {
-  from {
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-  }
-  to {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-}
-
-@keyframes slide-from-bottom {
-  from {
-    clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0 100%);
-  }
-  to {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  }
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.8s;
-  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-fill-mode: both;
-}
-
-/*
-  切换时，旧的视图不应该有动画，它应该在下面，等待被新的视图覆盖。
-  这可以防止在动画完成前，页面底部提前变色。
-*/
 ::view-transition-old(root) {
-  animation: none;
+  animation: 0.5s ease-out both fade-out;
 }
 
-/* 从浅色到深色：新内容（深色）从顶部滑入 */
-html.dark::view-transition-new(root) {
-  animation-name: slide-from-top;
+::view-transition-new(root) {
+  animation: 0.5s ease-in both fade-in;
 }
 
-/* 从深色到浅色：新内容（浅色）从底部滑入 */
-html:not(.dark)::view-transition-new(root) {
-  animation-name: slide-from-bottom;
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
 }
 
 /* 强制播放器内部的 video 元素高度为 100%，并保持内容完整显示 */

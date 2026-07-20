@@ -1,0 +1,143 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e12]
+  - generic [ref=e559]:
+    - complementary [ref=e561]:
+      - generic [ref=e563]:
+        - generic [ref=e564]:
+          - link "Vision TV Vision TV" [ref=e566] [cursor=pointer]:
+            - /url: /
+            - img "Vision TV" [ref=e567]
+            - generic [ref=e568]: Vision TV
+          - button [ref=e569] [cursor=pointer]:
+            - img [ref=e570]
+        - navigation [ref=e571]:
+          - link "首页" [ref=e572] [cursor=pointer]:
+            - /url: /
+            - img [ref=e574]
+            - generic [ref=e577]: 首页
+          - link "搜索" [ref=e578] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e580]
+            - generic [ref=e583]: 搜索
+        - generic [ref=e585]:
+          - link "电影" [ref=e586] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e588]
+            - generic [ref=e590]: 电影
+          - link "剧集" [ref=e591] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e593]
+            - generic [ref=e596]: 剧集
+          - link "综艺" [ref=e597] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e599]
+            - generic [ref=e603]: 综艺
+    - generic [ref=e604]:
+      - button "Back" [ref=e606] [cursor=pointer]:
+        - img [ref=e607]
+      - generic [ref=e609]:
+        - button "Toggle theme" [ref=e610] [cursor=pointer]:
+          - img [ref=e611]
+        - button "User Menu" [ref=e614] [cursor=pointer]:
+          - img [ref=e615]
+      - main [ref=e618]:
+        - generic [ref=e619]:
+          - heading "庆余年 > 第 1 集" [level=1] [ref=e621]
+          - generic [ref=e623]:
+            - generic [ref=e625]:
+              - generic [ref=e627]:
+                - generic [ref=e632]:
+                  - generic [ref=e633]:
+                    - generic "播放" [ref=e635] [cursor=pointer]:
+                      - img [ref=e636]
+                    - generic "播放下一集" [ref=e638] [cursor=pointer]:
+                      - img [ref=e640]
+                    - generic [ref=e642] [cursor=pointer]:
+                      - img [ref=e644]
+                      - generic:
+                        - generic:
+                          - generic: "70"
+                    - generic [ref=e647]: 00:00 / 00:00
+                  - generic [ref=e648]:
+                    - generic "显示设置" [ref=e649] [cursor=pointer]:
+                      - img [ref=e651]
+                    - generic "开启画中画" [ref=e654] [cursor=pointer]:
+                      - img [ref=e656]
+                    - generic "网页全屏" [ref=e658] [cursor=pointer]:
+                      - img [ref=e660]
+                    - generic "全屏" [ref=e662] [cursor=pointer]:
+                      - img [ref=e664]
+                - generic:
+                  - generic:
+                    - img
+              - generic [ref=e667]:
+                - generic [ref=e670]: 🎬
+                - paragraph [ref=e673]: 正在切换播放源...
+            - generic [ref=e675]:
+              - generic [ref=e676]:
+                - generic [ref=e677] [cursor=pointer]: 选集
+                - generic [ref=e678] [cursor=pointer]: 换源
+              - generic [ref=e679]:
+                - button "1-46" [ref=e682] [cursor=pointer]: 1-46
+                - button [ref=e684] [cursor=pointer]:
+                  - img [ref=e685]
+              - generic [ref=e687]:
+                - button "1" [ref=e688] [cursor=pointer]
+                - button "2" [ref=e689] [cursor=pointer]
+                - button "3" [ref=e690] [cursor=pointer]
+                - button "4" [ref=e691] [cursor=pointer]
+                - button "5" [ref=e692] [cursor=pointer]
+                - button "6" [ref=e693] [cursor=pointer]
+                - button "7" [ref=e694] [cursor=pointer]
+                - button "8" [ref=e695] [cursor=pointer]
+                - button "9" [ref=e696] [cursor=pointer]
+                - button "10" [ref=e697] [cursor=pointer]
+                - button "11" [ref=e698] [cursor=pointer]
+                - button "12" [ref=e699] [cursor=pointer]
+                - button "13" [ref=e700] [cursor=pointer]
+                - button "14" [ref=e701] [cursor=pointer]
+                - button "15" [ref=e702] [cursor=pointer]
+                - button "16" [ref=e703] [cursor=pointer]
+                - button "17" [ref=e704] [cursor=pointer]
+                - button "18" [ref=e705] [cursor=pointer]
+                - button "19" [ref=e706] [cursor=pointer]
+                - button "20" [ref=e707] [cursor=pointer]
+                - button "21" [ref=e708] [cursor=pointer]
+                - button "22" [ref=e709] [cursor=pointer]
+                - button "23" [ref=e710] [cursor=pointer]
+                - button "24" [ref=e711] [cursor=pointer]
+                - button "25" [ref=e712] [cursor=pointer]
+                - button "26" [ref=e713] [cursor=pointer]
+                - button "27" [ref=e714] [cursor=pointer]
+                - button "28" [ref=e715] [cursor=pointer]
+                - button "29" [ref=e716] [cursor=pointer]
+                - button "30" [ref=e717] [cursor=pointer]
+                - button "31" [ref=e718] [cursor=pointer]
+                - button "32" [ref=e719] [cursor=pointer]
+                - button "33" [ref=e720] [cursor=pointer]
+                - button "34" [ref=e721] [cursor=pointer]
+                - button "35" [ref=e722] [cursor=pointer]
+                - button "36" [ref=e723] [cursor=pointer]
+                - button "37" [ref=e724] [cursor=pointer]
+                - button "38" [ref=e725] [cursor=pointer]
+                - button "39" [ref=e726] [cursor=pointer]
+                - button "40" [ref=e727] [cursor=pointer]
+                - button "41" [ref=e728] [cursor=pointer]
+                - button "42" [ref=e729] [cursor=pointer]
+                - button "43" [ref=e730] [cursor=pointer]
+                - button "44" [ref=e731] [cursor=pointer]
+                - button "45" [ref=e732] [cursor=pointer]
+                - button "46" [ref=e733] [cursor=pointer]
+          - generic [ref=e734]:
+            - generic [ref=e736]:
+              - heading "庆余年" [level=1] [ref=e737]:
+                - text: 庆余年
+                - button [ref=e738] [cursor=pointer]:
+                  - img [ref=e739]
+              - generic [ref=e741]:
+                - generic [ref=e742]: 剧情,古装
+                - generic [ref=e743]: "2019"
+                - generic [ref=e744]: 魔都资源
+                - generic [ref=e745]: 国产剧
+              - generic [ref=e746]: 某大学文学史专业的学生张庆熟读古典名著，但他用现代观念剖析古代文学史的论文命题不被叶教授所认可。为了让叶教授成为自己的研究生导师，张庆决定通过写小说的方式，进一步阐述自己想要表达的观点。在他的小说中，身世神秘的少年——范闲，自小跟随奶奶生活在海边小城澹州，随着一位老师的突然造访，他看似平静的生活开始直面重重的危机与考验。在神秘老师和一位蒙眼守护者的指点下，范闲熟识药性药理，修炼霸道真气并精进武艺，而后接连化解了诸多危局。因对身世之谜的好奇，范闲离开澹州，前赴京都。在京都，范闲凭借过人的智谋与勇武成为年轻一代的佼佼者，他先以诗文冠绝京都，而后出使邻国，营救人质，整合谍报网，查处震动朝野的走私案……这个过程中，范闲饱尝人间冷暖并坚守对正义、良善的坚持，历经家族、江湖、庙堂的种种考验与锤炼，书写了光彩的人生传奇。
+            - img "庆余年" [ref=e750]

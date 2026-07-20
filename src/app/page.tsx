@@ -157,6 +157,9 @@ function HomeClient() {
   return (
     <PageLayout>
       <div className='px-2 sm:px-10 py-4 sm:py-8 overflow-visible'>
+        {/* 霓虹渐变分割线 */}
+        <div className='h-[1px] bg-gradient-to-r from-transparent via-neon/30 dark:via-neon/60 to-transparent mb-6' />
+
         {/* 顶部 Tab 切换 */}
         <div className='mb-8 flex justify-center'>
           <CapsuleSwitch
@@ -174,12 +177,12 @@ function HomeClient() {
             // 收藏夹视图
             <section className='mb-8'>
               <div className='mb-4 flex items-center justify-between'>
-                <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+                <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200 font-heading tracking-wide'>
                   我的收藏
                 </h2>
                 {favoriteItems.length > 0 && (
                   <button
-                    className='text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                    className='text-sm text-gray-400 hover:text-neon dark:text-gray-500 dark:hover:text-gray-200'
                     onClick={async () => {
                       await clearAllFavorites();
                       setFavoriteItems([]);
@@ -216,12 +219,12 @@ function HomeClient() {
               {/* 热门电影 */}
               <section className='mb-8'>
                 <div className='mb-4 flex items-center justify-between'>
-                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200 font-heading tracking-wide'>
                     热门电影
                   </h2>
                   <Link
                     href='/douban?type=movie'
-                    className='flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                    className='flex items-center text-sm text-gray-400 hover:text-neon dark:text-gray-500 dark:hover:text-gray-200'
                   >
                     查看更多
                     <ChevronRight className='w-4 h-4 ml-1' />
@@ -264,12 +267,12 @@ function HomeClient() {
               {/* 热门剧集 */}
               <section className='mb-8'>
                 <div className='mb-4 flex items-center justify-between'>
-                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200 font-heading tracking-wide'>
                     热门剧集
                   </h2>
                   <Link
                     href='/douban?type=tv'
-                    className='flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                    className='flex items-center text-sm text-gray-400 hover:text-neon dark:text-gray-500 dark:hover:text-gray-200'
                   >
                     查看更多
                     <ChevronRight className='w-4 h-4 ml-1' />
@@ -311,12 +314,12 @@ function HomeClient() {
               {/* 热门综艺 */}
               <section className='mb-8'>
                 <div className='mb-4 flex items-center justify-between'>
-                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200 font-heading tracking-wide'>
                     热门综艺
                   </h2>
                   <Link
                     href='/douban?type=show'
-                    className='flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+                    className='flex items-center text-sm text-gray-400 hover:text-neon dark:text-gray-500 dark:hover:text-gray-200'
                   >
                     查看更多
                     <ChevronRight className='w-4 h-4 ml-1' />
@@ -364,9 +367,9 @@ function HomeClient() {
             showAnnouncement ? '' : 'opacity-0 pointer-events-none'
           }`}
         >
-          <div className='w-full max-w-md rounded-xl bg-white p-6 shadow-xl dark:bg-gray-900 transform transition-all duration-300 hover:shadow-2xl'>
+          <div className='w-full max-w-md rounded-xl bg-white dark:bg-[#1a1a1f] p-6 shadow-xl border border-gray-200 dark:border-neon/20 transform transition-all duration-300 hover:shadow-2xl'>
             <div className='flex justify-between items-start mb-4'>
-              <h3 className='text-2xl font-bold tracking-tight text-gray-800 dark:text-white border-b border-green-500 pb-1'>
+              <h3 className='text-2xl font-bold tracking-tight text-gray-900 dark:text-white font-heading border-b border-neon pb-1'>
                 提示
               </h3>
               <button
@@ -376,8 +379,8 @@ function HomeClient() {
               ></button>
             </div>
             <div className='mb-6'>
-              <div className='relative overflow-hidden rounded-lg mb-4 bg-green-50 dark:bg-green-900/20'>
-                <div className='absolute inset-y-0 left-0 w-1.5 bg-green-500 dark:bg-green-400'></div>
+              <div className='relative overflow-hidden rounded-lg mb-4 bg-neon/5 border border-neon/20'>
+                <div className='absolute inset-y-0 left-0 w-1.5 bg-neon'></div>
                 <p className='ml-4 text-gray-600 dark:text-gray-300 leading-relaxed'>
                   {announcement}
                 </p>
@@ -385,7 +388,7 @@ function HomeClient() {
             </div>
             <button
               onClick={() => handleCloseAnnouncement(announcement)}
-              className='w-full rounded-lg bg-gradient-to-r from-green-600 to-green-700 px-4 py-3 text-white font-medium shadow-md hover:shadow-lg hover:from-green-700 hover:to-green-800 dark:from-green-600 dark:to-green-700 dark:hover:from-green-700 dark:hover:to-green-800 transition-all duration-300 transform hover:-translate-y-0.5'
+              className='w-full rounded-lg bg-gradient-to-r from-neon to-neon-light px-4 py-3 text-white font-medium shadow-[0_0_15px_rgba(82,99,255,0.3)] hover:shadow-[0_0_25px_rgba(82,99,255,0.5)] hover:from-neon-light hover:to-neon transition-all duration-300 transform hover:-translate-y-0.5'
             >
               我知道了
             </button>

@@ -3,7 +3,7 @@
 
 import { ChevronUp, Search, X } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { Suspense, useEffect, useMemo, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 
 import {
   addSearchHistory,
@@ -12,6 +12,11 @@ import {
   getSearchHistory,
   subscribeToDataUpdates,
 } from '@/lib/db.client';
+import {
+  getSearchResultScore,
+  normalizeSearchResults,
+  normalizeSearchText,
+} from '@/lib/searchRank';
 import { SearchResult } from '@/lib/types';
 import { yellowWords } from '@/lib/yellow';
 
@@ -30,6 +35,10 @@ function SearchPageClient() {
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchedSourceCount, setSearchedSourceCount] = useState(0);
+  const [totalSourceCount, setTotalSourceCount] = useState(0);
+  const [failedSourceCount, setFailedSourceCount] = useState(0);
+  const searchRequestIdRef = useRef(0);
 
   // 获取默认聚合设置：只读取用户本地设置，默认为 true
   const getDefaultAggregate = () => {
@@ -51,7 +60,7 @@ function SearchPageClient() {
     const map = new Map<string, SearchResult[]>();
     searchResults.forEach((item) => {
       // 使用 title + year + type 作为键，year 必然存在，但依然兜底 'unknown'
-      const key = `${item.title.replaceAll(' ', '')}-${
+      const key = `${normalizeSearchText(item.title)}-${
         item.year || 'unknown'
       }-${item.episodes.length === 1 ? 'movie' : 'tv'}`;
       const arr = map.get(key) || [];
@@ -59,38 +68,37 @@ function SearchPageClient() {
       map.set(key, arr);
     });
     return Array.from(map.entries()).sort((a, b) => {
-      // 优先排序：标题与搜索词完全一致的排在前面
-      const aExactMatch = a[1][0].title
-        .replaceAll(' ', '')
-        .includes(searchQuery.trim().replaceAll(' ', ''));
-      const bExactMatch = b[1][0].title
-        .replaceAll(' ', '')
-        .includes(searchQuery.trim().replaceAll(' ', ''));
+      const scoreDelta =
+        getSearchResultScore(b[1][0], searchQuery) -
+        getSearchResultScore(a[1][0], searchQuery);
+      if (scoreDelta !== 0) return scoreDelta;
 
-      if (aExactMatch && !bExactMatch) return -1;
-      if (!aExactMatch && bExactMatch) return 1;
+      const aYear = Number.parseInt(a[1][0].year || '', 10) || 0;
+      const bYear = Number.parseInt(b[1][0].year || '', 10) || 0;
+      if (aYear !== bYear) return bYear - aYear;
 
-      // 年份排序
-      if (a[1][0].year === b[1][0].year) {
-        return a[0].localeCompare(b[0]);
-      } else {
-        // 处理 unknown 的情况
-        const aYear = a[1][0].year;
-        const bYear = b[1][0].year;
-
-        if (aYear === 'unknown' && bYear === 'unknown') {
-          return 0;
-        } else if (aYear === 'unknown') {
-          return 1; // a 排在后面
-        } else if (bYear === 'unknown') {
-          return -1; // b 排在后面
-        } else {
-          // 都是数字年份，按数字大小排序（大的在前面）
-          return aYear > bYear ? -1 : 1;
-        }
-      }
+      return a[0].localeCompare(b[0], 'zh-CN');
     });
-  }, [searchResults]);
+  }, [searchResults, searchQuery]);
+
+  const searchProgressText = useMemo(() => {
+    if (!showResults || totalSourceCount === 0) return '';
+    const resultText = `${searchResults.length} 个结果`;
+    if (isLoading) {
+      return `已返回 ${resultText}，正在继续搜索 ${searchedSourceCount}/${totalSourceCount} 个源`;
+    }
+    if (failedSourceCount > 0) {
+      return `已完成 ${totalSourceCount} 个源，${failedSourceCount} 个源无响应，当前显示 ${resultText}`;
+    }
+    return `已完成 ${totalSourceCount} 个源，当前显示 ${resultText}`;
+  }, [
+    failedSourceCount,
+    isLoading,
+    searchedSourceCount,
+    searchResults.length,
+    showResults,
+    totalSourceCount,
+  ]);
 
   useEffect(() => {
     // 无搜索参数时聚焦搜索框
@@ -160,54 +168,81 @@ function SearchPageClient() {
   }, [searchParams]);
 
   const fetchSearchResults = async (query: string) => {
+    const requestId = searchRequestIdRef.current + 1;
+    searchRequestIdRef.current = requestId;
+    const applyIfCurrent = (callback: () => void) => {
+      if (searchRequestIdRef.current === requestId) callback();
+    };
+
     try {
       setIsLoading(true);
-      const response = await fetch(
-        `/api/search?q=${encodeURIComponent(query.trim())}`
-      );
-      const data = await response.json();
-      let results = data.results;
-      if (
-        typeof window !== 'undefined' &&
-        !(window as any).RUNTIME_CONFIG?.DISABLE_YELLOW_FILTER
-      ) {
-        results = results.filter((result: SearchResult) => {
-          const typeName = result.type_name || '';
-          return !yellowWords.some((word: string) => typeName.includes(word));
+      setShowResults(true);
+      setSearchResults([]);
+      setSearchedSourceCount(0);
+      setTotalSourceCount(0);
+      setFailedSourceCount(0);
+
+      const resourcesResponse = await fetch('/api/search/resources');
+      if (!resourcesResponse.ok) throw new Error('获取搜索源失败');
+
+      const resources = (await resourcesResponse.json()) as Array<{
+        key: string;
+      }>;
+      applyIfCurrent(() => setTotalSourceCount(resources.length));
+
+      if (resources.length === 0) {
+        applyIfCurrent(() => {
+          setSearchResults([]);
+          setIsLoading(false);
         });
+        return;
       }
-      setSearchResults(
-        results.sort((a: SearchResult, b: SearchResult) => {
-          // 优先排序：标题与搜索词完全一致的排在前面
-          const aExactMatch = a.title === query.trim();
-          const bExactMatch = b.title === query.trim();
 
-          if (aExactMatch && !bExactMatch) return -1;
-          if (!aExactMatch && bExactMatch) return 1;
+      await Promise.allSettled(
+        resources.map(async (resource) => {
+          try {
+            const response = await fetch(
+              `/api/search/source?q=${encodeURIComponent(
+                query.trim()
+              )}&resourceId=${encodeURIComponent(resource.key)}`
+            );
 
-          // 如果都匹配或都不匹配，则按原来的逻辑排序
-          if (a.year === b.year) {
-            return a.title.localeCompare(b.title);
-          } else {
-            // 处理 unknown 的情况
-            if (a.year === 'unknown' && b.year === 'unknown') {
-              return 0;
-            } else if (a.year === 'unknown') {
-              return 1; // a 排在后面
-            } else if (b.year === 'unknown') {
-              return -1; // b 排在后面
-            } else {
-              // 都是数字年份，按数字大小排序（大的在前面）
-              return parseInt(a.year) > parseInt(b.year) ? -1 : 1;
+            if (!response.ok) {
+              throw new Error('搜索源无响应');
             }
+
+            const data = await response.json();
+            let results = (data.results || []) as SearchResult[];
+            if (
+              typeof window !== 'undefined' &&
+              !(window as any).RUNTIME_CONFIG?.DISABLE_YELLOW_FILTER
+            ) {
+              results = results.filter((result: SearchResult) => {
+                const typeName = result.type_name || '';
+                return !yellowWords.some((word: string) =>
+                  typeName.includes(word)
+                );
+              });
+            }
+
+            applyIfCurrent(() => {
+              setSearchResults((prev) =>
+                normalizeSearchResults([...prev, ...results], query)
+              );
+            });
+          } catch (error) {
+            applyIfCurrent(() => setFailedSourceCount((prev) => prev + 1));
+          } finally {
+            applyIfCurrent(() => setSearchedSourceCount((prev) => prev + 1));
           }
         })
       );
-      setShowResults(true);
+
+      applyIfCurrent(() => setShowResults(true));
     } catch (error) {
-      setSearchResults([]);
+      applyIfCurrent(() => setSearchResults([]));
     } finally {
-      setIsLoading(false);
+      applyIfCurrent(() => setIsLoading(false));
     }
   };
 
@@ -222,8 +257,9 @@ function SearchPageClient() {
     setShowResults(true);
 
     router.push(`/search?q=${encodeURIComponent(trimmed)}`);
-    // 直接发请求
-    fetchSearchResults(trimmed);
+    if (searchParams.get('q') === trimmed) {
+      fetchSearchResults(trimmed);
+    }
 
     // 保存到搜索历史 (事件监听会自动更新界面)
     addSearchHistory(trimmed);
@@ -257,7 +293,7 @@ function SearchPageClient() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder='搜索电影、电视剧...'
-                className='w-full h-12 rounded-lg bg-gray-50/80 py-3 pl-10 pr-4 text-sm text-gray-700 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-400 focus:bg-white border border-gray-200/50 shadow-sm dark:bg-gray-800 dark:text-gray-300 dark:placeholder-gray-500 dark:focus:bg-gray-700 dark:border-gray-700'
+                className='w-full h-12 rounded-lg bg-gray-100 py-3 pl-10 pr-4 text-sm text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-neon focus:bg-white border border-gray-200 dark:bg-surface-dark/60 dark:text-gray-200 dark:placeholder-gray-500 dark:focus:bg-surface-dark dark:border-neon/10 shadow-sm'
               />
             </div>
           </form>
@@ -265,17 +301,20 @@ function SearchPageClient() {
 
         {/* 搜索结果或搜索历史 */}
         <div className='max-w-[95%] mx-auto mt-12 overflow-visible'>
-          {isLoading ? (
-            <div className='flex justify-center items-center h-40'>
-              <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-green-500'></div>
-            </div>
-          ) : showResults ? (
+          {showResults ? (
             <section className='mb-12'>
               {/* 标题 + 聚合开关 */}
-              <div className='mb-8 flex items-center justify-between'>
-                <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
-                  搜索结果
-                </h2>
+              <div className='mb-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
+                <div>
+                  <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+                    搜索结果
+                  </h2>
+                  {searchProgressText && (
+                    <p className='mt-1 text-sm text-gray-500 dark:text-gray-400'>
+                      {searchProgressText}
+                    </p>
+                  )}
+                </div>
                 {/* 聚合开关 */}
                 <label className='flex items-center gap-2 cursor-pointer select-none'>
                   <span className='text-sm text-gray-700 dark:text-gray-300'>
@@ -290,14 +329,21 @@ function SearchPageClient() {
                         setViewMode(viewMode === 'agg' ? 'all' : 'agg')
                       }
                     />
-                    <div className='w-9 h-5 bg-gray-300 rounded-full peer-checked:bg-green-500 transition-colors dark:bg-gray-600'></div>
+                    <div className='w-9 h-5 bg-surface rounded-full peer-checked:bg-neon transition-colors'></div>
                     <div className='absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full transition-transform peer-checked:translate-x-4'></div>
                   </div>
                 </label>
               </div>
+              {isLoading && searchResults.length === 0 && (
+                <div className='flex justify-center items-center h-40'>
+                  <div className='animate-spin rounded-full h-8 w-8 border-b-2 border-neon'></div>
+                </div>
+              )}
               <div
                 key={`search-results-${viewMode}`}
-                className='justify-start grid grid-cols-3 gap-x-2 gap-y-14 sm:gap-y-20 px-0 sm:px-2 sm:grid-cols-[repeat(auto-fill,_minmax(11rem,_1fr))] sm:gap-x-8'
+                className={`justify-start grid grid-cols-3 gap-x-2 gap-y-14 sm:gap-y-20 px-0 sm:px-2 sm:grid-cols-[repeat(auto-fill,_minmax(11rem,_1fr))] sm:gap-x-8 ${
+                  isLoading && searchResults.length === 0 ? 'hidden' : ''
+                }`}
               >
                 {viewMode === 'agg'
                   ? aggregatedResults.map(([mapKey, group]) => {
@@ -399,7 +445,7 @@ function SearchPageClient() {
       {/* 返回顶部悬浮按钮 */}
       <button
         onClick={scrollToTop}
-        className={`fixed bottom-20 md:bottom-6 right-6 z-[500] w-12 h-12 bg-green-500/90 hover:bg-green-500 text-white rounded-full shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out flex items-center justify-center group ${
+        className={`fixed bottom-20 md:bottom-6 right-6 z-[500] w-12 h-12 bg-neon/90 hover:bg-neon text-white rounded-full shadow-[0_0_15px_rgba(82,99,255,0.3)] backdrop-blur-sm transition-all duration-300 ease-in-out flex items-center justify-center group ${
           showBackToTop
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 translate-y-4 pointer-events-none'

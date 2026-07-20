@@ -1,4 +1,4 @@
-name: Upstream Sync
+name: Upstream Sync Config
 
 on:
   schedule:
@@ -10,31 +10,39 @@ permissions:
   actions: write
 
 jobs:
-  sync_latest_from_upstream:
-    name: Sync latest commits from upstream repo
+  sync_config:
+    name: Sync config.json from upstream
     runs-on: ubuntu-latest
-    if: ${{ github.event.repository.fork }}
 
     steps:
-      # Step 1: run a standard checkout action
       - name: Checkout target repo
         uses: actions/checkout@v4
 
-      # Step 2: run the sync action
-      - name: Sync upstream changes
-        id: sync
-        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
-        with:
-          upstream_sync_repo: senshinya/MoonTV
-          upstream_sync_branch: main
-          target_sync_branch: main
-          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Sync check
-        if: failure()
+      - name: Fetch config.json from upstream
         run: |
-          echo "[Error] Due to a change in the workflow file of the upstream repository, GitHub has automatically suspended the scheduled automatic update. You need to manually sync your fork."
-          exit 1
+          curl -sL "https://raw.githubusercontent.com/samqin123/MoonTV/main/config.json" -o upstream_config.json
+
+      - name: Check if config.json changed
+        id: check
+        run: |
+          if ! diff -q config.json upstream_config.json > /dev/null 2>&1; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Commit and push updated config.json
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          cp upstream_config.json config.json
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.json
+          git commit -m "chore: sync config.json from upstream"
+          git push
+
+      - name: Cleanup
+        run: rm -f upstream_config.json
 
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@main

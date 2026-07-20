@@ -128,9 +128,9 @@ export default function ScrollableRow({
           >
             <button
               onClick={handleScrollLeftClick}
-              className='w-12 h-12 bg-white/95 rounded-full shadow-lg flex items-center justify-center hover:bg-white border border-gray-200 transition-transform hover:scale-105 dark:bg-gray-800/90 dark:hover:bg-gray-700 dark:border-gray-600'
+              className='w-12 h-12 bg-white/95 dark:bg-surface/90 rounded-full shadow-lg flex items-center justify-center border border-gray-200 dark:border-neon/20 text-neon hover:bg-neon/10 dark:hover:bg-neon/20 hover:border-neon/50 dark:hover:shadow-[0_0_15px_rgba(82,99,255,0.3)] transition-all duration-300 hover:scale-105'
             >
-              <ChevronLeft className='w-6 h-6 text-gray-600 dark:text-gray-300' />
+              <ChevronLeft className='w-6 h-6 text-neon/80' />
             </button>
           </div>
         </div>
@@ -157,9 +157,9 @@ export default function ScrollableRow({
           >
             <button
               onClick={handleScrollRightClick}
-              className='w-12 h-12 bg-white/95 rounded-full shadow-lg flex items-center justify-center hover:bg-white border border-gray-200 transition-transform hover:scale-105 dark:bg-gray-800/90 dark:hover:bg-gray-700 dark:border-gray-600'
+              className='w-12 h-12 bg-white/95 dark:bg-surface/90 rounded-full shadow-lg flex items-center justify-center border border-gray-200 dark:border-neon/20 text-neon hover:bg-neon/10 dark:hover:bg-neon/20 hover:border-neon/50 dark:hover:shadow-[0_0_15px_rgba(82,99,255,0.3)] transition-all duration-300 hover:scale-105'
             >
-              <ChevronRight className='w-6 h-6 text-gray-600 dark:text-gray-300' />
+              <ChevronRight className='w-6 h-6 text-neon/80' />
             </button>
           </div>
         </div>

@@ -1,10 +1,10 @@
-# MoonTV
+# Vision TV
 
 <div align="center">
-  <img src="public/logo.png" alt="LibreTV Logo" width="120">
+  <img src="public/icons/icon-192x192.png" alt="Vision TV Logo" width="120">
 </div>
 
-> 🎬 **MoonTV** 是一个开箱即用的、跨平台的影视聚合播放器。它基于 **Next.js 14** + **Tailwind&nbsp;CSS** + **TypeScript** 构建，支持多资源搜索、在线播放、收藏同步、播放记录、本地/云端存储，让你可以随时随地畅享海量免费影视内容。
+> 🎬 **Vision TV** 是一个开箱即用的、跨平台的影视聚合播放器。它基于 **Next.js 14** + **Tailwind&nbsp;CSS** + **TypeScript** 构建，支持多资源搜索、在线播放、收藏同步、播放记录、本地/云端存储，让你可以随时随地畅享海量免费影视内容。
 
 <div align="center">
 
@@ -26,6 +26,7 @@
 - ❤️ **收藏 + 继续观看**：支持 Redis/D1/Upstash 存储，多端同步进度。
 - 📱 **PWA**：离线缓存、安装到桌面/主屏，移动端原生体验。
 - 🌗 **响应式布局**：桌面侧边栏 + 移动底部导航，自适应各种屏幕尺寸。
+- 🎨 **亮/暗色主题**：View Transitions API 流畅切换，霓虹科技风 UI。
 - 🚀 **极简部署**：一条 Docker 命令即可将完整服务跑起来，或免费部署到 Vercel 和 Cloudflare。
 - 👿 **智能去广告**：自动跳过视频中的切片广告（实验性）
 
@@ -34,6 +35,7 @@
   <img src="public/screenshot1.png" alt="项目截图" style="max-width:600px">
   <img src="public/screenshot2.png" alt="项目截图" style="max-width:600px">
   <img src="public/screenshot3.png" alt="项目截图" style="max-width:600px">
+  <img src="public/screenshot4.png" alt="项目截图" style="max-width:600px">
 </details>
 
 ## 🗺 目录
@@ -55,11 +57,12 @@
 | 分类      | 主要依赖                                                                                              |
 | --------- | ----------------------------------------------------------------------------------------------------- |
 | 前端框架  | [Next.js 14](https://nextjs.org/) · App Router                                                        |
-| UI & 样式 | [Tailwind&nbsp;CSS 3](https://tailwindcss.com/)                                                       |
+| UI & 样式 | [Tailwind&nbsp;CSS 3](https://tailwindcss.com/) · [Lucide Icons](https://lucide.dev/)                 |
 | 语言      | TypeScript 4                                                                                          |
 | 播放器    | [ArtPlayer](https://github.com/zhw2590582/ArtPlayer) · [HLS.js](https://github.com/video-dev/hls.js/) |
-| 代码质量  | ESLint · Prettier · Jest                                                                              |
-| 部署      | Docker · Vercel · CloudFlare pages                                                                    |
+| 主题      | [next-themes](https://github.com/pacocoursey/next-themes) · View Transitions API                      |
+| 代码质量  | ESLint · Prettier · Husky · lint-staged                                                               |
+| 部署      | Docker · Vercel · Cloudflare Pages                                                                    |
 
 ## 部署
 
@@ -203,7 +206,7 @@ networks:
 
 建议在 fork 的仓库中启用本仓库自带的 GitHub Actions 自动同步功能（见 `.github/workflows/sync.yml`）。
 
-如需手动同步主仓库更新，也可以使用 GitHub 官方的 [Sync fork](https://docs.github.com/cn/github/collaborating-with-issues-and-pull-requests/syncing-a-fork) 功能。
+如需手动同步主仓库更新，也可以使用 GitHub 官方的 [Sync fork](https://docs.github.com/cn/github/collaborating-with-issues-and-pull-requests/syncing-a-f-fork) 功能。
 
 ## 环境变量
 
@@ -211,7 +214,7 @@ networks:
 | --------------------------------- | -------------------------------------------- | -------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | USERNAME                          | 非 localstorage 部署时的管理员账号           | 任意字符串                       | （空）                                                                                                                     |
 | PASSWORD                          | 非 localstorage 部署时为管理员密码           | 任意字符串                       | （空）                                                                                                                     |
-| SITE_NAME                         | 站点名称                                     | 任意字符串                       | MoonTV                                                                                                                     |
+| SITE_NAME                         | 站点名称                                     | 任意字符串                       | Vision TV                                                                                                                  |
 | ANNOUNCEMENT                      | 站点公告                                     | 任意字符串                       | 本网站仅提供影视信息搜索服务，所有内容均来自第三方网站。本站不存储任何视频资源，不对任何内容的准确性、合法性、完整性负责。 |
 | NEXT_PUBLIC_STORAGE_TYPE          | 播放记录/收藏的存储方式                      | localstorage、redis、d1、upstash | localstorage                                                                                                               |
 | REDIS_URL                         | redis 连接 url                               | 连接 url                         | 空                                                                                                                         |
@@ -266,7 +269,7 @@ custom_category 支持的自定义分类已知如下：
 
 也可输入如 "哈利波特" 效果等同于豆瓣搜索
 
-MoonTV 支持标准的苹果 CMS V10 API 格式。
+Vision TV 支持标准的苹果 CMS V10 API 格式。
 
 修改后 **无需重新构建**，服务会在启动时读取一次。
 
@@ -291,6 +294,8 @@ MoonTV 支持标准的苹果 CMS V10 API 格式。
 - [x] 深色模式
 - [x] 持久化存储
 - [x] 多账户
+- [x] 亮色模式
+- [x] 霓虹科技风 UI
 
 ## 安全与隐私提醒
 
@@ -317,12 +322,15 @@ MoonTV 支持标准的苹果 CMS V10 API 格式。
 
 ## License
 
-[MIT](LICENSE) © 2025 MoonTV & Contributors
+[MIT](LICENSE) © 2025 Vision TV & Contributors
 
 ## 致谢
 
-- [ts-nextjs-tailwind-starter](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter) — 项目最初基于该脚手架。
+- [MoonTV](https://github.com/senshinya/MoonTV) — 本项目基于 MoonTV 开发，感谢其提供的优秀基础。
 - [LibreTV](https://github.com/LibreSpark/LibreTV) — 由此启发，站在巨人的肩膀上。
+- [ts-nextjs-tailwind-starter](https://github.com/theodorusclarence/ts-nextjs-tailwind-starter) — 项目最初基于该脚手架。
 - [ArtPlayer](https://github.com/zhw2590582/ArtPlayer) — 提供强大的网页视频播放器。
 - [HLS.js](https://github.com/video-dev/hls.js) — 实现 HLS 流媒体在浏览器中的播放支持。
+- [next-themes](https://github.com/pacocoursey/next-themes) — 提供优雅的主题切换方案。
+- [Lucide](https://lucide.dev/) — 提供精美的开源图标库。
 - 感谢所有提供免费影视接口的站点。

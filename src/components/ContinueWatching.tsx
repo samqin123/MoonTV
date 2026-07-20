@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 'use client';
 
+import { Plus } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 import type { PlayRecord } from '@/lib/db.client';
@@ -87,13 +88,31 @@ export default function ContinueWatching({ className }: ContinueWatchingProps) {
 
   return (
     <section className={`mb-8 ${className || ''}`}>
+      {/* 浮动药丸标签 */}
+      <div className='mb-4 overflow-hidden'>
+        <div className='flex gap-3 px-4 sm:px-6 py-2 overflow-x-auto scrollbar-hide'>
+          {['继续观看', '最新更新', '热门推荐', '高分佳作'].map((tag, i) => (
+            <span
+              key={tag}
+              className='flex items-center gap-1 px-3 py-1.5 bg-neon/5 border border-neon/20
+                         rounded-full text-sm text-neon whitespace-nowrap
+                         dark:bg-neon/10 dark:border-neon/30
+                         animate-float'
+              style={{ animationDelay: `${i * 0.5}s` }}
+            >
+              <Plus size={14} />
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
       <div className='mb-4 flex items-center justify-between'>
-        <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200'>
+        <h2 className='text-xl font-bold text-gray-800 dark:text-gray-200 font-heading tracking-wide'>
           继续观看
         </h2>
         {!loading && playRecords.length > 0 && (
           <button
-            className='text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200'
+            className='text-sm text-gray-400 hover:text-neon dark:text-gray-500 dark:hover:text-gray-200'
             onClick={async () => {
               await clearAllPlayRecords();
               setPlayRecords([]);

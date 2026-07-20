@@ -11,41 +11,41 @@ const publicDir = path.join(projectRoot, 'public');
 const manifestPath = path.join(publicDir, 'manifest.json');
 
 // 从环境变量获取站点名称
-const siteName = process.env.SITE_NAME || 'MoonTV';
+const siteName = process.env.SITE_NAME || 'Vision TV';
 
 // manifest.json 模板
 const manifestTemplate = {
-  "name": siteName,
-  "short_name": siteName,
-  "description": "影视聚合",
-  "start_url": "/",
-  "scope": "/",
-  "display": "standalone",
-  "background_color": "#000000",
-  "apple-mobile-web-app-capable": "yes",
-  "apple-mobile-web-app-status-bar-style": "black",
-  "icons": [
+  name: siteName,
+  short_name: siteName,
+  description: '影视聚合',
+  start_url: '/',
+  scope: '/',
+  display: 'standalone',
+  background_color: '#000000',
+  'apple-mobile-web-app-capable': 'yes',
+  'apple-mobile-web-app-status-bar-style': 'black',
+  icons: [
     {
-      "src": "/icons/icon-192x192.png",
-      "sizes": "192x192",
-      "type": "image/png"
+      src: '/icons/icon-192x192.png',
+      sizes: '192x192',
+      type: 'image/png',
     },
     {
-      "src": "/icons/icon-256x256.png",
-      "sizes": "256x256",
-      "type": "image/png"
+      src: '/icons/icon-256x256.png',
+      sizes: '256x256',
+      type: 'image/png',
     },
     {
-      "src": "/icons/icon-384x384.png",
-      "sizes": "384x384",
-      "type": "image/png"
+      src: '/icons/icon-384x384.png',
+      sizes: '384x384',
+      type: 'image/png',
     },
     {
-      "src": "/icons/icon-512x512.png",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
+      src: '/icons/icon-512x512.png',
+      sizes: '512x512',
+      type: 'image/png',
+    },
+  ],
 };
 
 try {

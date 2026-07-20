@@ -1,0 +1,41 @@
+- generic [ref=e2]:
+  - banner [ref=e3]:
+    - button "User Menu" [ref=e8] [cursor=pointer]:
+      - img [ref=e9]
+    - link "Vision TV Vision TV" [ref=e13] [cursor=pointer]:
+      - /url: /
+      - img "Vision TV" [ref=e14]
+      - text: Vision TV
+  - main [ref=e17]:
+    - generic [ref=e21]:
+      - img [ref=e22]
+      - textbox "搜索电影、电视剧..." [ref=e25]
+    - button "返回顶部":
+      - img
+  - navigation [ref=e26]:
+    - list [ref=e27]:
+      - listitem [ref=e28]:
+        - link "首页" [ref=e29] [cursor=pointer]:
+          - /url: /
+          - img [ref=e30]
+          - generic [ref=e33]: 首页
+      - listitem [ref=e34]:
+        - link "搜索" [ref=e35] [cursor=pointer]:
+          - /url: /search
+          - img [ref=e36]
+          - generic [ref=e39]: 搜索
+      - listitem [ref=e40]:
+        - link "电影" [ref=e41] [cursor=pointer]:
+          - /url: /douban?type=movie
+          - img [ref=e42]
+          - generic [ref=e44]: 电影
+      - listitem [ref=e45]:
+        - link "剧集" [ref=e46] [cursor=pointer]:
+          - /url: /douban?type=tv
+          - img [ref=e47]
+          - generic [ref=e50]: 剧集
+      - listitem [ref=e51]:
+        - link "综艺" [ref=e52] [cursor=pointer]:
+          - /url: /douban?type=show
+          - img [ref=e53]
+          - generic [ref=e57]: 综艺

@@ -16,7 +16,8 @@ const config: Config = {
         },
       },
       fontFamily: {
-        primary: ['Inter', ...defaultTheme.fontFamily.sans],
+        primary: ['DM Sans', ...defaultTheme.fontFamily.sans],
+        heading: ['Orbitron', ...defaultTheme.fontFamily.sans],
       },
       colors: {
         primary: {
@@ -32,6 +33,22 @@ const config: Config = {
           900: '#0c4a6e',
         },
         dark: '#222222',
+        neon: {
+          DEFAULT: '#5263FF',
+          light: '#7B85FF',
+          dark: '#3A47CC',
+        },
+        cyan: {
+          DEFAULT: '#4DC6FC',
+          dark: '#2BA8E0',
+        },
+        surface: {
+          DEFAULT: '#313136',
+          dark: '#1a1a1f',
+          light: '#3d3d44',
+          bright: '#f8f9fc',
+          muted: '#eef0f5',
+        },
       },
       keyframes: {
         flicker: {
@@ -69,6 +86,25 @@ const config: Config = {
           '0%': { transform: 'translateX(100%)', opacity: '0' },
           '100%': { transform: 'translateX(0)', opacity: '1' },
         },
+        revealUp: {
+          '0%': { transform: 'translateY(40px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
+        },
+        revealLeft: {
+          '0%': { transform: 'translateX(-30px)', opacity: '0' },
+          '100%': { transform: 'translateX(0)', opacity: '1' },
+        },
+        glowPulse: {
+          '0%, 100%': { boxShadow: '0 0 5px rgba(82,99,255,0.3)' },
+          '50%': {
+            boxShadow:
+              '0 0 20px rgba(82,99,255,0.6), 0 0 40px rgba(82,99,255,0.2)',
+          },
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0px)' },
+          '50%': { transform: 'translateY(-8px)' },
+        },
       },
       animation: {
         flicker: 'flicker 3s linear infinite',
@@ -77,6 +113,10 @@ const config: Config = {
         'slide-up': 'slideUp 0.3s ease-in-out',
         'slide-down': 'slideDown 0.3s ease-in-out',
         'slide-in-from-right': 'slideInFromRight 0.3s ease-out',
+        'reveal-up': 'revealUp 0.6s ease-out forwards',
+        'reveal-left': 'revealLeft 0.6s ease-out forwards',
+        'glow-pulse': 'glowPulse 3s ease-in-out infinite',
+        float: 'float 4s ease-in-out infinite',
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',

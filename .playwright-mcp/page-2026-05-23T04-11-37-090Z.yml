@@ -1,0 +1,10 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e5]:
+    - heading "Vision TV" [level=1] [ref=e6]
+    - generic [ref=e7]:
+      - generic [ref=e8]:
+        - generic [ref=e9]: 密码
+        - textbox "密码" [ref=e10]:
+          - /placeholder: 输入访问密码
+      - button "登录" [disabled] [ref=e11]
+  - alert [ref=e12]

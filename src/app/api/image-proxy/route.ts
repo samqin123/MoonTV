@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 
 export const runtime = 'edge';
 
+const IMAGE_TIMEOUT_MS = 30000;
+
 // OrionTV 兼容接口
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -12,17 +14,26 @@ export async function GET(request: Request) {
   }
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), IMAGE_TIMEOUT_MS);
     const imageResponse = await fetch(imageUrl, {
       headers: {
+        Accept:
+          'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
         Referer: 'https://movie.douban.com/',
         'User-Agent':
           'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
       },
+      signal: controller.signal,
     });
+    clearTimeout(timeoutId);
 
     if (!imageResponse.ok) {
       return NextResponse.json(
-        { error: imageResponse.statusText },
+        {
+          error: imageResponse.statusText || 'Upstream image error',
+          sourceStatus: imageResponse.status,
+        },
         { status: imageResponse.status }
       );
     }
@@ -53,9 +64,16 @@ export async function GET(request: Request) {
       headers,
     });
   } catch (error) {
+    const message =
+      error instanceof Error ? error.message : 'Error fetching image';
+    const isTimeout = error instanceof Error && error.name === 'AbortError';
+
     return NextResponse.json(
-      { error: 'Error fetching image' },
-      { status: 500 }
+      {
+        error: isTimeout ? 'Image upstream timeout' : 'Error fetching image',
+        message,
+      },
+      { status: 502 }
     );
   }
 }

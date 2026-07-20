@@ -1,0 +1,46 @@
+- generic [ref=e1]:
+  - alert [ref=e229]
+  - generic [ref=e1339]:
+    - complementary [ref=e1341]:
+      - generic [ref=e1343]:
+        - generic [ref=e1344]:
+          - link "Vision TV Vision TV" [ref=e1346] [cursor=pointer]:
+            - /url: /
+            - img "Vision TV" [ref=e1347]
+            - generic [ref=e1348]: Vision TV
+          - button [ref=e1349] [cursor=pointer]:
+            - img [ref=e1350]
+        - navigation [ref=e1351]:
+          - link "首页" [ref=e1352] [cursor=pointer]:
+            - /url: /
+            - img [ref=e1354]
+            - generic [ref=e1357]: 首页
+          - link "搜索" [ref=e1358] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e1360]
+            - generic [ref=e1363]: 搜索
+        - generic [ref=e1365]:
+          - link "电影" [ref=e1366] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e1368]
+            - generic [ref=e1370]: 电影
+          - link "剧集" [ref=e1371] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e1373]
+            - generic [ref=e1376]: 剧集
+          - link "综艺" [ref=e1377] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e1379]
+            - generic [ref=e1383]: 综艺
+    - generic [ref=e1384]:
+      - generic [ref=e1385]:
+        - button "Toggle theme" [ref=e1386] [cursor=pointer]:
+          - img [ref=e1387]
+        - button "User Menu" [ref=e1390] [cursor=pointer]:
+          - img [ref=e1391]
+      - main [ref=e1394]:
+        - generic [ref=e1398]:
+          - img [ref=e1399]
+          - textbox "搜索电影、电视剧..." [active] [ref=e1402]
+        - button "返回顶部":
+          - img

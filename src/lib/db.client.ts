@@ -68,12 +68,12 @@ interface UserCacheStore {
 }
 
 // ---- 常量 ----
-const PLAY_RECORDS_KEY = 'moontv_play_records';
-const FAVORITES_KEY = 'moontv_favorites';
-const SEARCH_HISTORY_KEY = 'moontv_search_history';
+const PLAY_RECORDS_KEY = 'visiontv_play_records';
+const FAVORITES_KEY = 'visiontv_favorites';
+const SEARCH_HISTORY_KEY = 'visiontv_search_history';
 
 // 缓存相关常量
-const CACHE_PREFIX = 'moontv_cache_';
+const CACHE_PREFIX = 'visiontv_cache_';
 const CACHE_VERSION = '1.0.0';
 const CACHE_EXPIRE_TIME = 60 * 60 * 1000; // 一小时缓存过期
 
@@ -348,9 +348,14 @@ class HybridCacheManager {
 const cacheManager = HybridCacheManager.getInstance();
 
 // ---- 错误处理辅助函数 ----
+
+// 防止错误恢复请求的级联：记录各类数据最后一次恢复尝试的时间
+const lastRecoveryAttempt: Record<string, number> = {};
+const RECOVERY_COOLDOWN_MS = 30000; // 30秒内不重复尝试恢复
+
 /**
  * 数据库操作失败时的通用错误处理
- * 立即从数据库刷新对应类型的缓存以保持数据一致性
+ * 使用冷却期防止级联请求风暴
  */
 async function handleDatabaseOperationFailure(
   dataType: 'playRecords' | 'favorites' | 'searchHistory',
@@ -358,6 +363,16 @@ async function handleDatabaseOperationFailure(
 ): Promise<void> {
   console.error(`数据库操作失败 (${dataType}):`, error);
   triggerGlobalError(`数据库操作失败`);
+
+  // 冷却期检查：避免短时间内大量恢复请求
+  const now = Date.now();
+  if (
+    lastRecoveryAttempt[dataType] &&
+    now - lastRecoveryAttempt[dataType] < RECOVERY_COOLDOWN_MS
+  ) {
+    return;
+  }
+  lastRecoveryAttempt[dataType] = now;
 
   try {
     let freshData: any;
@@ -393,7 +408,7 @@ async function handleDatabaseOperationFailure(
     );
   } catch (refreshErr) {
     console.error(`刷新${dataType}缓存失败:`, refreshErr);
-    triggerGlobalError(`刷新${dataType}缓存失败`);
+    // 不再触发 globalError，避免级联错误提示
   }
 }
 
@@ -528,7 +543,8 @@ export async function savePlayRecord(
       })
     );
 
-    // 异步同步到数据库
+    // 异步同步到数据库（失败时不触发恢复请求，避免请求风暴）
+    // 缓存已乐观更新，下次保存会自动重试
     try {
       await fetchWithAuth('/api/playrecords', {
         method: 'POST',
@@ -538,9 +554,9 @@ export async function savePlayRecord(
         body: JSON.stringify({ key, record }),
       });
     } catch (err) {
-      await handleDatabaseOperationFailure('playRecords', err);
-      triggerGlobalError('保存播放记录失败');
-      throw err;
+      console.warn('保存播放记录到数据库失败，已缓存本地:', err);
+      // 不调用 handleDatabaseOperationFailure，避免级联请求
+      // 不 throw，避免上层重复处理
     }
     return;
   }
@@ -1398,7 +1414,7 @@ export async function getSkipConfig(
 
   // localStorage 模式
   try {
-    const raw = localStorage.getItem('moontv_skip_configs');
+    const raw = localStorage.getItem('visiontv_skip_configs');
     if (!raw) return null;
     const configs = JSON.parse(raw) as Record<string, SkipConfig>;
     return configs[key] || null;
@@ -1457,10 +1473,10 @@ export async function saveSkipConfig(
   }
 
   try {
-    const raw = localStorage.getItem('moontv_skip_configs');
+    const raw = localStorage.getItem('visiontv_skip_configs');
     const configs = raw ? (JSON.parse(raw) as Record<string, SkipConfig>) : {};
     configs[key] = config;
-    localStorage.setItem('moontv_skip_configs', JSON.stringify(configs));
+    localStorage.setItem('visiontv_skip_configs', JSON.stringify(configs));
     window.dispatchEvent(
       new CustomEvent('skipConfigsUpdated', {
         detail: configs,
@@ -1527,7 +1543,7 @@ export async function getAllSkipConfigs(): Promise<Record<string, SkipConfig>> {
 
   // localStorage 模式
   try {
-    const raw = localStorage.getItem('moontv_skip_configs');
+    const raw = localStorage.getItem('visiontv_skip_configs');
     if (!raw) return {};
     return JSON.parse(raw) as Record<string, SkipConfig>;
   } catch (err) {
@@ -1580,11 +1596,11 @@ export async function deleteSkipConfig(
   }
 
   try {
-    const raw = localStorage.getItem('moontv_skip_configs');
+    const raw = localStorage.getItem('visiontv_skip_configs');
     if (raw) {
       const configs = JSON.parse(raw) as Record<string, SkipConfig>;
       delete configs[key];
-      localStorage.setItem('moontv_skip_configs', JSON.stringify(configs));
+      localStorage.setItem('visiontv_skip_configs', JSON.stringify(configs));
       window.dispatchEvent(
         new CustomEvent('skipConfigsUpdated', {
           detail: configs,

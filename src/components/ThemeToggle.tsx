@@ -32,8 +32,7 @@ export function ThemeToggle() {
     return <div className='w-10 h-10' />;
   }
 
-  const toggleTheme = () => {
-    // 检查浏览器是否支持 View Transitions API
+  const toggleTheme = async () => {
     const targetTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
     setThemeColor(targetTheme);
     if (!(document as any).startViewTransition) {
@@ -41,9 +40,11 @@ export function ThemeToggle() {
       return;
     }
 
-    (document as any).startViewTransition(() => {
+    const transition = (document as any).startViewTransition(() => {
       setTheme(targetTheme);
     });
+
+    await transition.finished;
   };
 
   return (

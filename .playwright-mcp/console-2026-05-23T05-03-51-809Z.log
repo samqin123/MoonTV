@@ -1,0 +1,49 @@
+[     438ms] [INFO] %cDownload the React DevTools for a better development experience: https://reactjs.org/link/react-devtools font-weight:bold @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/compiled/react-dom/cjs/react-dom.development.js:38559
+[     590ms] [LOG] %c ArtPlayer %c 5.2.3 %c https://artplayer.org color: #fff; background: #5f5f5f color: #fff; background: #4bc729  @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/artplayer@5.2.3/node_modules/artplayer/dist/artplayer.js:8
+[     660ms] [LOG] mdzy 16302 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:593
+[    1675ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1017
+[    1828ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1120
+[    1829ms] [LOG] 网络错误，尝试恢复... @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1126
+[    1829ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   52979ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:186
+[   53381ms] [LOG] [Fast Refresh] done in 402ms @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:43
+[   53397ms] [LOG] mdzy 16302 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:613
+[   54407ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1037
+[   54624ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   54624ms] [LOG] 网络错误，尝试恢复... @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1146
+[   54624ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   59661ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:186
+[   60601ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1037
+[   60602ms] [LOG] [Fast Refresh] done in 942ms @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:43
+[   60629ms] [LOG] mdzy 16302 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:613
+[   60748ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   60750ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   60756ms] Event
+[   61639ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1037
+[   61757ms] [ERROR] 播放器错误: Event @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/app-index.js:32
+[   61779ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   61780ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   61784ms] Event
+[   62785ms] [ERROR] 播放器错误: Event @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/app-index.js:32
+[   62917ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   62917ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   63922ms] [ERROR] 播放器错误: Event @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/app-index.js:32
+[   64053ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   64054ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   65058ms] [ERROR] 播放器错误: Event @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/app-index.js:32
+[   65193ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   65193ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   66198ms] [ERROR] 播放器错误: Event @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/app-index.js:32
+[   66440ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   66441ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   91950ms] [LOG] [Fast Refresh] rebuilding @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:186
+[   92215ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1038
+[   92217ms] [LOG] [Fast Refresh] done in 266ms @ webpack-internal:///(app-pages-browser)/./node_modules/.pnpm/next@14.2.30_@babel+core@7._9960d4ec3ace0dc381872aaaee443d1f/node_modules/next/dist/client/components/react-dev-overlay/app/hot-reloader-client.js:43
+[   92230ms] [LOG] mdzy 16302 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:614
+[   92417ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   92418ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   92422ms] Event
+[   93241ms] [LOG] https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8 @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1038
+[   93372ms] [WARNING] HLS播放源异常: hlsError {type: networkError, details: manifestLoadError, fatal: true, url: https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8, loader: CustomHlsJsLoader} @ webpack-internal:///(app-pages-browser)/./src/app/play/page.tsx:1140
+[   93373ms] [ERROR] Failed to load resource: net::ERR_CONNECTION_CLOSED @ https://play.modujx13.com/20240721/PmYCNEBT/index.m3u8:0
+[   93375ms] Event

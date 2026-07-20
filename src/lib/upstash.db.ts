@@ -347,7 +347,7 @@ export class UpstashRedisStorage implements IStorage {
 
 // 单例 Upstash Redis 客户端
 function getUpstashRedisClient(): Redis {
-  const globalKey = Symbol.for('__MOONTV_UPSTASH_REDIS_CLIENT__');
+  const globalKey = Symbol.for('__VISIONTV_UPSTASH_REDIS_CLIENT__');
   let client: Redis | undefined = (global as any)[globalKey];
 
   if (!client) {

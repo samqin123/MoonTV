@@ -1,0 +1,76 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - button "User Menu" [ref=e8] [cursor=pointer]:
+        - img [ref=e9]
+      - link "Vision TV Vision TV" [ref=e13] [cursor=pointer]:
+        - /url: /
+        - img "Vision TV" [ref=e14]
+        - text: Vision TV
+    - main [ref=e17]:
+      - generic [ref=e18]:
+        - generic [ref=e21]:
+          - button "首页" [ref=e22] [cursor=pointer]
+          - button "收藏夹" [ref=e23] [cursor=pointer]
+        - generic [ref=e24]:
+          - generic [ref=e25]:
+            - generic [ref=e27]:
+              - generic [ref=e28]:
+                - img [ref=e29]
+                - text: 继续观看
+              - generic [ref=e30]:
+                - img [ref=e31]
+                - text: 最新更新
+              - generic [ref=e32]:
+                - img [ref=e33]
+                - text: 热门推荐
+              - generic [ref=e34]:
+                - img [ref=e35]
+                - text: 高分佳作
+            - heading "继续观看" [level=2] [ref=e37]
+          - generic [ref=e71]:
+            - heading "热门电影" [level=2] [ref=e72]
+            - link "查看更多" [ref=e73] [cursor=pointer]:
+              - /url: /douban?type=movie
+              - text: 查看更多
+              - img [ref=e74]
+          - generic [ref=e111]:
+            - heading "热门剧集" [level=2] [ref=e112]
+            - link "查看更多" [ref=e113] [cursor=pointer]:
+              - /url: /douban?type=tv
+              - text: 查看更多
+              - img [ref=e114]
+          - generic [ref=e151]:
+            - heading "热门综艺" [level=2] [ref=e152]
+            - link "查看更多" [ref=e153] [cursor=pointer]:
+              - /url: /douban?type=show
+              - text: 查看更多
+              - img [ref=e154]
+    - navigation [ref=e190]:
+      - list [ref=e191]:
+        - listitem [ref=e192]:
+          - link "首页" [ref=e193] [cursor=pointer]:
+            - /url: /
+            - img [ref=e194]
+            - generic [ref=e197]: 首页
+        - listitem [ref=e198]:
+          - link "搜索" [ref=e199] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e200]
+            - generic [ref=e203]: 搜索
+        - listitem [ref=e204]:
+          - link "电影" [ref=e205] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e206]
+            - generic [ref=e208]: 电影
+        - listitem [ref=e209]:
+          - link "剧集" [ref=e210] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e211]
+            - generic [ref=e214]: 剧集
+        - listitem [ref=e215]:
+          - link "综艺" [ref=e216] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e217]
+            - generic [ref=e221]: 综艺
+  - alert [ref=e222]

@@ -42,6 +42,42 @@ function getD1Database(): D1Database {
   return (process.env as any).DB as D1Database;
 }
 
+// D1瞬态错误重试包装器
+async function withRetry<T>(
+  operation: () => Promise<T>,
+  maxRetries = 3
+): Promise<T> {
+  for (let i = 0; i < maxRetries; i++) {
+    try {
+      return await operation();
+    } catch (err: any) {
+      const isLastAttempt = i === maxRetries - 1;
+      // D1瞬态错误：503、429、内部错误等
+      const isTransient =
+        err.message?.includes('503') ||
+        err.message?.includes('429') ||
+        err.message?.includes('too many requests') ||
+        err.message?.includes('internal error') ||
+        err.message?.includes('database connection') ||
+        err.message?.includes('SQLITE_BUSY') ||
+        err.message?.includes('SQLITE_LOCKED');
+
+      if (isTransient && !isLastAttempt) {
+        console.log(
+          `D1 operation failed, retrying... (${i + 1}/${maxRetries})`
+        );
+        console.error('Error:', err.message);
+        await new Promise((resolve) => setTimeout(resolve, 500 * (i + 1)));
+        continue;
+      }
+
+      throw err;
+    }
+  }
+
+  throw new Error('Max retries exceeded');
+}
+
 export class D1Storage implements IStorage {
   private db: D1Database | null = null;
 
@@ -59,10 +95,12 @@ export class D1Storage implements IStorage {
   ): Promise<PlayRecord | null> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare('SELECT * FROM play_records WHERE username = ? AND key = ?')
-        .bind(userName, key)
-        .first<any>();
+      const result = await withRetry(() =>
+        db
+          .prepare('SELECT * FROM play_records WHERE username = ? AND key = ?')
+          .bind(userName, key)
+          .first<any>()
+      );
 
       if (!result) return null;
 
@@ -91,29 +129,31 @@ export class D1Storage implements IStorage {
   ): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare(
+      await withRetry(() =>
+        db
+          .prepare(
+            `
+            INSERT OR REPLACE INTO play_records
+            (username, key, title, source_name, cover, year, index_episode, total_episodes, play_time, total_time, save_time, search_title)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
           `
-          INSERT OR REPLACE INTO play_records 
-          (username, key, title, source_name, cover, year, index_episode, total_episodes, play_time, total_time, save_time, search_title)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        `
-        )
-        .bind(
-          userName,
-          key,
-          record.title,
-          record.source_name,
-          record.cover,
-          record.year,
-          record.index,
-          record.total_episodes,
-          record.play_time,
-          record.total_time,
-          record.save_time,
-          record.search_title || null
-        )
-        .run();
+          )
+          .bind(
+            userName,
+            key,
+            record.title,
+            record.source_name,
+            record.cover,
+            record.year,
+            record.index,
+            record.total_episodes,
+            record.play_time,
+            record.total_time,
+            record.save_time,
+            record.search_title || null
+          )
+          .run()
+      );
     } catch (err) {
       console.error('Failed to set play record:', err);
       throw err;
@@ -125,12 +165,14 @@ export class D1Storage implements IStorage {
   ): Promise<Record<string, PlayRecord>> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare(
-          'SELECT * FROM play_records WHERE username = ? ORDER BY save_time DESC'
-        )
-        .bind(userName)
-        .all<any>();
+      const result = await withRetry(() =>
+        db
+          .prepare(
+            'SELECT * FROM play_records WHERE username = ? ORDER BY save_time DESC'
+          )
+          .bind(userName)
+          .all<any>()
+      );
 
       const records: Record<string, PlayRecord> = {};
 
@@ -159,10 +201,12 @@ export class D1Storage implements IStorage {
   async deletePlayRecord(userName: string, key: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare('DELETE FROM play_records WHERE username = ? AND key = ?')
-        .bind(userName, key)
-        .run();
+      await withRetry(() =>
+        db
+          .prepare('DELETE FROM play_records WHERE username = ? AND key = ?')
+          .bind(userName, key)
+          .run()
+      );
     } catch (err) {
       console.error('Failed to delete play record:', err);
       throw err;
@@ -173,10 +217,12 @@ export class D1Storage implements IStorage {
   async getFavorite(userName: string, key: string): Promise<Favorite | null> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare('SELECT * FROM favorites WHERE username = ? AND key = ?')
-        .bind(userName, key)
-        .first<any>();
+      const result = await withRetry(() =>
+        db
+          .prepare('SELECT * FROM favorites WHERE username = ? AND key = ?')
+          .bind(userName, key)
+          .first<any>()
+      );
 
       if (!result) return null;
 
@@ -202,25 +248,27 @@ export class D1Storage implements IStorage {
   ): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare(
+      await withRetry(() =>
+        db
+          .prepare(
+            `
+            INSERT OR REPLACE INTO favorites
+            (username, key, title, source_name, cover, year, total_episodes, save_time)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
           `
-          INSERT OR REPLACE INTO favorites 
-          (username, key, title, source_name, cover, year, total_episodes, save_time)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `
-        )
-        .bind(
-          userName,
-          key,
-          favorite.title,
-          favorite.source_name,
-          favorite.cover,
-          favorite.year,
-          favorite.total_episodes,
-          favorite.save_time
-        )
-        .run();
+          )
+          .bind(
+            userName,
+            key,
+            favorite.title,
+            favorite.source_name,
+            favorite.cover,
+            favorite.year,
+            favorite.total_episodes,
+            favorite.save_time
+          )
+          .run()
+      );
     } catch (err) {
       console.error('Failed to set favorite:', err);
       throw err;
@@ -230,12 +278,14 @@ export class D1Storage implements IStorage {
   async getAllFavorites(userName: string): Promise<Record<string, Favorite>> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare(
-          'SELECT * FROM favorites WHERE username = ? ORDER BY save_time DESC'
-        )
-        .bind(userName)
-        .all<any>();
+      const result = await withRetry(() =>
+        db
+          .prepare(
+            'SELECT * FROM favorites WHERE username = ? ORDER BY save_time DESC'
+          )
+          .bind(userName)
+          .all<any>()
+      );
 
       const favorites: Record<string, Favorite> = {};
 
@@ -261,10 +311,12 @@ export class D1Storage implements IStorage {
   async deleteFavorite(userName: string, key: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare('DELETE FROM favorites WHERE username = ? AND key = ?')
-        .bind(userName, key)
-        .run();
+      await withRetry(() =>
+        db
+          .prepare('DELETE FROM favorites WHERE username = ? AND key = ?')
+          .bind(userName, key)
+          .run()
+      );
     } catch (err) {
       console.error('Failed to delete favorite:', err);
       throw err;
@@ -275,10 +327,12 @@ export class D1Storage implements IStorage {
   async registerUser(userName: string, password: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare('INSERT INTO users (username, password) VALUES (?, ?)')
-        .bind(userName, password)
-        .run();
+      await withRetry(() =>
+        db
+          .prepare('INSERT INTO users (username, password) VALUES (?, ?)')
+          .bind(userName, password)
+          .run()
+      );
     } catch (err) {
       console.error('Failed to register user:', err);
       throw err;
@@ -288,10 +342,12 @@ export class D1Storage implements IStorage {
   async verifyUser(userName: string, password: string): Promise<boolean> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare('SELECT password FROM users WHERE username = ?')
-        .bind(userName)
-        .first<{ password: string }>();
+      const result = await withRetry(() =>
+        db
+          .prepare('SELECT password FROM users WHERE username = ?')
+          .bind(userName)
+          .first<{ password: string }>()
+      );
 
       return result?.password === password;
     } catch (err) {
@@ -303,10 +359,12 @@ export class D1Storage implements IStorage {
   async checkUserExist(userName: string): Promise<boolean> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare('SELECT 1 FROM users WHERE username = ?')
-        .bind(userName)
-        .first();
+      const result = await withRetry(() =>
+        db
+          .prepare('SELECT 1 FROM users WHERE username = ?')
+          .bind(userName)
+          .first()
+      );
 
       return result !== null;
     } catch (err) {
@@ -318,10 +376,12 @@ export class D1Storage implements IStorage {
   async changePassword(userName: string, newPassword: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare('UPDATE users SET password = ? WHERE username = ?')
-        .bind(newPassword, userName)
-        .run();
+      await withRetry(() =>
+        db
+          .prepare('UPDATE users SET password = ? WHERE username = ?')
+          .bind(newPassword, userName)
+          .run()
+      );
     } catch (err) {
       console.error('Failed to change password:', err);
       throw err;
@@ -331,21 +391,22 @@ export class D1Storage implements IStorage {
   async deleteUser(userName: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      const statements = [
-        db.prepare('DELETE FROM users WHERE username = ?').bind(userName),
-        db
-          .prepare('DELETE FROM play_records WHERE username = ?')
-          .bind(userName),
-        db.prepare('DELETE FROM favorites WHERE username = ?').bind(userName),
-        db
-          .prepare('DELETE FROM search_history WHERE username = ?')
-          .bind(userName),
-        db
-          .prepare('DELETE FROM skip_configs WHERE username = ?')
-          .bind(userName),
-      ];
-
-      await db.batch(statements);
+      await withRetry(() => {
+        const statements = [
+          db.prepare('DELETE FROM users WHERE username = ?').bind(userName),
+          db
+            .prepare('DELETE FROM play_records WHERE username = ?')
+            .bind(userName),
+          db.prepare('DELETE FROM favorites WHERE username = ?').bind(userName),
+          db
+            .prepare('DELETE FROM search_history WHERE username = ?')
+            .bind(userName),
+          db
+            .prepare('DELETE FROM skip_configs WHERE username = ?')
+            .bind(userName),
+        ];
+        return db.batch(statements);
+      });
     } catch (err) {
       console.error('Failed to delete user:', err);
       throw err;
@@ -356,12 +417,14 @@ export class D1Storage implements IStorage {
   async getSearchHistory(userName: string): Promise<string[]> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare(
-          'SELECT keyword FROM search_history WHERE username = ? ORDER BY created_at DESC LIMIT ?'
-        )
-        .bind(userName, SEARCH_HISTORY_LIMIT)
-        .all<{ keyword: string }>();
+      const result = await withRetry(() =>
+        db
+          .prepare(
+            'SELECT keyword FROM search_history WHERE username = ? ORDER BY created_at DESC LIMIT ?'
+          )
+          .bind(userName, SEARCH_HISTORY_LIMIT)
+          .all<{ keyword: string }>()
+      );
 
       return result.results.map((row) => row.keyword);
     } catch (err) {
@@ -373,35 +436,39 @@ export class D1Storage implements IStorage {
   async addSearchHistory(userName: string, keyword: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      // 先删除可能存在的重复记录
-      await db
-        .prepare(
-          'DELETE FROM search_history WHERE username = ? AND keyword = ?'
-        )
-        .bind(userName, keyword)
-        .run();
-
-      // 添加新记录
-      await db
-        .prepare('INSERT INTO search_history (username, keyword) VALUES (?, ?)')
-        .bind(userName, keyword)
-        .run();
-
-      // 保持历史记录条数限制
-      await db
-        .prepare(
-          `
-          DELETE FROM search_history 
-          WHERE username = ? AND id NOT IN (
-            SELECT id FROM search_history 
-            WHERE username = ? 
-            ORDER BY created_at DESC 
-            LIMIT ?
+      await withRetry(async () => {
+        // 先删除可能存在的重复记录
+        await db
+          .prepare(
+            'DELETE FROM search_history WHERE username = ? AND keyword = ?'
           )
-        `
-        )
-        .bind(userName, userName, SEARCH_HISTORY_LIMIT)
-        .run();
+          .bind(userName, keyword)
+          .run();
+
+        // 添加新记录
+        await db
+          .prepare(
+            'INSERT INTO search_history (username, keyword) VALUES (?, ?)'
+          )
+          .bind(userName, keyword)
+          .run();
+
+        // 保持历史记录条数限制
+        await db
+          .prepare(
+            `
+            DELETE FROM search_history
+            WHERE username = ? AND id NOT IN (
+              SELECT id FROM search_history
+              WHERE username = ?
+              ORDER BY created_at DESC
+              LIMIT ?
+            )
+          `
+          )
+          .bind(userName, userName, SEARCH_HISTORY_LIMIT)
+          .run();
+      });
     } catch (err) {
       console.error('Failed to add search history:', err);
       throw err;
@@ -411,19 +478,21 @@ export class D1Storage implements IStorage {
   async deleteSearchHistory(userName: string, keyword?: string): Promise<void> {
     try {
       const db = await this.getDatabase();
-      if (keyword) {
-        await db
-          .prepare(
-            'DELETE FROM search_history WHERE username = ? AND keyword = ?'
-          )
-          .bind(userName, keyword)
-          .run();
-      } else {
-        await db
-          .prepare('DELETE FROM search_history WHERE username = ?')
-          .bind(userName)
-          .run();
-      }
+      await withRetry(() => {
+        if (keyword) {
+          return db
+            .prepare(
+              'DELETE FROM search_history WHERE username = ? AND keyword = ?'
+            )
+            .bind(userName, keyword)
+            .run();
+        } else {
+          return db
+            .prepare('DELETE FROM search_history WHERE username = ?')
+            .bind(userName)
+            .run();
+        }
+      });
     } catch (err) {
       console.error('Failed to delete search history:', err);
       throw err;
@@ -434,9 +503,11 @@ export class D1Storage implements IStorage {
   async getAllUsers(): Promise<string[]> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare('SELECT username FROM users ORDER BY created_at ASC')
-        .all<{ username: string }>();
+      const result = await withRetry(() =>
+        db
+          .prepare('SELECT username FROM users ORDER BY created_at ASC')
+          .all<{ username: string }>()
+      );
 
       return result.results.map((row) => row.username);
     } catch (err) {
@@ -449,9 +520,11 @@ export class D1Storage implements IStorage {
   async getAdminConfig(): Promise<AdminConfig | null> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare('SELECT config FROM admin_config WHERE id = 1')
-        .first<{ config: string }>();
+      const result = await withRetry(() =>
+        db
+          .prepare('SELECT config FROM admin_config WHERE id = 1')
+          .first<{ config: string }>()
+      );
 
       if (!result) return null;
 
@@ -465,12 +538,14 @@ export class D1Storage implements IStorage {
   async setAdminConfig(config: AdminConfig): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare(
-          'INSERT OR REPLACE INTO admin_config (id, config) VALUES (1, ?)'
-        )
-        .bind(JSON.stringify(config))
-        .run();
+      await withRetry(() =>
+        db
+          .prepare(
+            'INSERT OR REPLACE INTO admin_config (id, config) VALUES (1, ?)'
+          )
+          .bind(JSON.stringify(config))
+          .run()
+      );
     } catch (err) {
       console.error('Failed to set admin config:', err);
       throw err;
@@ -485,12 +560,14 @@ export class D1Storage implements IStorage {
   ): Promise<SkipConfig | null> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare(
-          'SELECT * FROM skip_configs WHERE username = ? AND source = ? AND id_video = ?'
-        )
-        .bind(userName, source, id)
-        .first<any>();
+      const result = await withRetry(() =>
+        db
+          .prepare(
+            'SELECT * FROM skip_configs WHERE username = ? AND source = ? AND id_video = ?'
+          )
+          .bind(userName, source, id)
+          .first<any>()
+      );
 
       if (!result) return null;
 
@@ -513,23 +590,25 @@ export class D1Storage implements IStorage {
   ): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare(
+      await withRetry(() =>
+        db
+          .prepare(
+            `
+            INSERT OR REPLACE INTO skip_configs
+            (username, source, id_video, enable, intro_time, outro_time)
+            VALUES (?, ?, ?, ?, ?, ?)
           `
-          INSERT OR REPLACE INTO skip_configs 
-          (username, source, id_video, enable, intro_time, outro_time)
-          VALUES (?, ?, ?, ?, ?, ?)
-        `
-        )
-        .bind(
-          userName,
-          source,
-          id,
-          config.enable ? 1 : 0,
-          config.intro_time,
-          config.outro_time
-        )
-        .run();
+          )
+          .bind(
+            userName,
+            source,
+            id,
+            config.enable ? 1 : 0,
+            config.intro_time,
+            config.outro_time
+          )
+          .run()
+      );
     } catch (err) {
       console.error('Failed to set skip config:', err);
       throw err;
@@ -543,12 +622,14 @@ export class D1Storage implements IStorage {
   ): Promise<void> {
     try {
       const db = await this.getDatabase();
-      await db
-        .prepare(
-          'DELETE FROM skip_configs WHERE username = ? AND source = ? AND id_video = ?'
-        )
-        .bind(userName, source, id)
-        .run();
+      await withRetry(() =>
+        db
+          .prepare(
+            'DELETE FROM skip_configs WHERE username = ? AND source = ? AND id_video = ?'
+          )
+          .bind(userName, source, id)
+          .run()
+      );
     } catch (err) {
       console.error('Failed to delete skip config:', err);
       throw err;
@@ -560,12 +641,14 @@ export class D1Storage implements IStorage {
   ): Promise<{ [key: string]: SkipConfig }> {
     try {
       const db = await this.getDatabase();
-      const result = await db
-        .prepare(
-          'SELECT source, id_video, enable, intro_time, outro_time FROM skip_configs WHERE username = ?'
-        )
-        .bind(userName)
-        .all<any>();
+      const result = await withRetry(() =>
+        db
+          .prepare(
+            'SELECT source, id_video, enable, intro_time, outro_time FROM skip_configs WHERE username = ?'
+          )
+          .bind(userName)
+          .all<any>()
+      );
 
       const configs: { [key: string]: SkipConfig } = {};
 

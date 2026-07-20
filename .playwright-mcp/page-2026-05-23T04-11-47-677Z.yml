@@ -1,0 +1,14 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - button "Toggle theme" [ref=e13] [cursor=pointer]:
+      - img [ref=e14]
+    - generic [ref=e5]:
+      - heading "Vision TV" [level=1] [ref=e6]
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - generic [ref=e9]: 密码
+          - textbox "密码" [ref=e10]:
+            - /placeholder: 输入访问密码
+            - text: codex-test
+        - button "登录" [ref=e11] [cursor=pointer]
+  - alert [ref=e12]

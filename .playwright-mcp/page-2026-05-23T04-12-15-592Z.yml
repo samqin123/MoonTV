@@ -1,0 +1,76 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e3]:
+    - complementary [ref=e5]:
+      - generic [ref=e7]:
+        - generic [ref=e8]:
+          - link "Vision TV Vision TV" [ref=e10] [cursor=pointer]:
+            - /url: /
+            - img "Vision TV" [ref=e11]
+            - generic [ref=e12]: Vision TV
+          - button [ref=e13] [cursor=pointer]:
+            - img [ref=e14]
+        - navigation [ref=e15]:
+          - link "首页" [ref=e16] [cursor=pointer]:
+            - /url: /
+            - img [ref=e18]
+            - generic [ref=e21]: 首页
+          - link "搜索" [ref=e22] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e24]
+            - generic [ref=e27]: 搜索
+        - generic [ref=e29]:
+          - link "电影" [ref=e30] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e32]
+            - generic [ref=e34]: 电影
+          - link "剧集" [ref=e35] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e37]
+            - generic [ref=e40]: 剧集
+          - link "综艺" [ref=e41] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e43]
+            - generic [ref=e47]: 综艺
+    - generic [ref=e48]:
+      - button "User Menu" [ref=e52] [cursor=pointer]:
+        - img [ref=e53]
+      - main [ref=e56]:
+        - generic [ref=e57]:
+          - generic [ref=e60]:
+            - button "首页" [ref=e61] [cursor=pointer]
+            - button "收藏夹" [ref=e62] [cursor=pointer]
+          - generic [ref=e63]:
+            - generic [ref=e64]:
+              - generic [ref=e66]:
+                - generic [ref=e67]:
+                  - img [ref=e68]
+                  - text: 继续观看
+                - generic [ref=e69]:
+                  - img [ref=e70]
+                  - text: 最新更新
+                - generic [ref=e71]:
+                  - img [ref=e72]
+                  - text: 热门推荐
+                - generic [ref=e73]:
+                  - img [ref=e74]
+                  - text: 高分佳作
+              - heading "继续观看" [level=2] [ref=e76]
+            - generic [ref=e110]:
+              - heading "热门电影" [level=2] [ref=e111]
+              - link "查看更多" [ref=e112] [cursor=pointer]:
+                - /url: /douban?type=movie
+                - text: 查看更多
+                - img [ref=e113]
+            - generic [ref=e150]:
+              - heading "热门剧集" [level=2] [ref=e151]
+              - link "查看更多" [ref=e152] [cursor=pointer]:
+                - /url: /douban?type=tv
+                - text: 查看更多
+                - img [ref=e153]
+            - generic [ref=e190]:
+              - heading "热门综艺" [level=2] [ref=e191]
+              - link "查看更多" [ref=e192] [cursor=pointer]:
+                - /url: /douban?type=show
+                - text: 查看更多
+                - img [ref=e193]
+  - alert [ref=e229]

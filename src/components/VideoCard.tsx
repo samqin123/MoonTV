@@ -37,6 +37,17 @@ interface VideoCardProps {
   type?: string;
 }
 
+function getPosterReliabilityScore(posterUrl: string) {
+  try {
+    const { hostname, port } = new URL(posterUrl);
+    if (hostname === 'www.imgzy360.com' && port === '7788') return -20;
+    if (hostname === 'pic.lzzypic.com') return -10;
+  } catch {
+    return -30;
+  }
+  return 0;
+}
+
 export default function VideoCard({
   id,
   title = '',
@@ -57,7 +68,10 @@ export default function VideoCard({
 }: VideoCardProps) {
   const router = useRouter();
   const [favorited, setFavorited] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageFailed, setImageFailed] = useState(false);
+  const [useOriginalImage, setUseOriginalImage] = useState(false);
+  const [posterIndex, setPosterIndex] = useState(0);
 
   const isAggregate = from === 'search' && !!items?.length;
 
@@ -93,6 +107,13 @@ export default function VideoCard({
       first: items[0],
       mostFrequentDoubanId: getMostFrequent(countMap),
       mostFrequentEpisodes: getMostFrequent(episodeCountMap) || 0,
+      sourceCount: new Set(items.map((item) => `${item.source}-${item.id}`))
+        .size,
+      posterCandidates: Array.from(
+        new Set(items.map((item) => item.poster).filter(Boolean))
+      ).sort(
+        (a, b) => getPosterReliabilityScore(b) - getPosterReliabilityScore(a)
+      ),
     };
   }, [isAggregate, items]);
 
@@ -105,12 +126,31 @@ export default function VideoCard({
   );
   const actualEpisodes = aggregateData?.mostFrequentEpisodes ?? episodes;
   const actualYear = aggregateData?.first.year ?? year;
+  const actualSourceName = aggregateData?.first.source_name ?? source_name;
   const actualQuery = query || '';
   const actualSearchType = isAggregate
     ? aggregateData?.first.episodes?.length === 1
       ? 'movie'
       : 'tv'
     : type;
+  const posterCandidates = useMemo(() => {
+    if (aggregateData?.posterCandidates?.length) {
+      return aggregateData.posterCandidates;
+    }
+    return actualPoster ? [actualPoster] : [];
+  }, [actualPoster, aggregateData?.posterCandidates]);
+  const currentPoster = posterCandidates[posterIndex] || actualPoster;
+  const imageSrc =
+    useOriginalImage || !currentPoster
+      ? currentPoster
+      : processImageUrl(currentPoster);
+
+  useEffect(() => {
+    setImageLoaded(false);
+    setImageFailed(false);
+    setUseOriginalImage(false);
+    setPosterIndex(0);
+  }, [posterCandidates]);
 
   // 获取收藏状态
   useEffect(() => {
@@ -196,22 +236,21 @@ export default function VideoCard({
   );
 
   const handleClick = useCallback(() => {
+    const playParams = new URLSearchParams();
+
     if (from === 'douban') {
-      router.push(
-        `/play?title=${encodeURIComponent(actualTitle.trim())}${
-          actualYear ? `&year=${actualYear}` : ''
-        }${actualSearchType ? `&stype=${actualSearchType}` : ''}`
-      );
+      playParams.set('title', actualTitle.trim());
+      if (actualYear) playParams.set('year', actualYear);
+      if (actualSearchType) playParams.set('stype', actualSearchType);
+      router.push(`/play?${playParams.toString()}`);
     } else if (actualSource && actualId) {
-      router.push(
-        `/play?source=${actualSource}&id=${actualId}&title=${encodeURIComponent(
-          actualTitle
-        )}${actualYear ? `&year=${actualYear}` : ''}${
-          isAggregate ? '&prefer=true' : ''
-        }${
-          actualQuery ? `&stitle=${encodeURIComponent(actualQuery.trim())}` : ''
-        }${actualSearchType ? `&stype=${actualSearchType}` : ''}`
-      );
+      playParams.set('source', actualSource);
+      playParams.set('id', actualId);
+      playParams.set('title', actualTitle);
+      if (actualYear) playParams.set('year', actualYear);
+      if (actualQuery) playParams.set('stitle', actualQuery.trim());
+      if (actualSearchType) playParams.set('stype', actualSearchType);
+      router.push(`/play?${playParams.toString()}`);
     }
   }, [
     from,
@@ -220,7 +259,6 @@ export default function VideoCard({
     router,
     actualTitle,
     actualYear,
-    isAggregate,
     actualQuery,
     actualSearchType,
   ]);
@@ -267,24 +305,69 @@ export default function VideoCard({
     return configs[from] || configs.search;
   }, [from, isAggregate, actualDoubanId, rate]);
 
+  const typeLabel =
+    actualSearchType === 'tv'
+      ? '剧集'
+      : actualSearchType === 'movie'
+      ? '电影'
+      : actualEpisodes && actualEpisodes > 1
+      ? '剧集'
+      : '电影';
+
+  const detailBadges = useMemo(() => {
+    const badges: string[] = [];
+    if (actualYear && actualYear !== 'unknown') badges.push(actualYear);
+    badges.push(typeLabel);
+    if (actualEpisodes && actualEpisodes > 1) {
+      badges.push(`${actualEpisodes}集`);
+    }
+    if (isAggregate && aggregateData?.sourceCount) {
+      badges.push(`${aggregateData.sourceCount}源`);
+    }
+    return badges;
+  }, [
+    actualEpisodes,
+    actualYear,
+    aggregateData?.sourceCount,
+    isAggregate,
+    typeLabel,
+  ]);
+
   return (
     <div
-      className='group relative w-full rounded-lg bg-transparent cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.05] hover:z-[500]'
+      className='group relative w-full rounded-lg bg-transparent cursor-pointer transition-all duration-500 ease-in-out hover:scale-[1.03] hover:z-[500] hover:drop-shadow-[0_0_12px_rgba(82,99,255,0.4)]'
       onClick={handleClick}
     >
       {/* 海报容器 */}
-      <div className='relative aspect-[2/3] overflow-hidden rounded-lg'>
+      <div className='relative aspect-[2/3] overflow-hidden rounded-lg ring-1 ring-gray-200/50 dark:ring-white/5 group-hover:ring-neon/40 dark:group-hover:ring-neon/50 transition-all duration-500'>
         {/* 骨架屏 */}
-        {!isLoading && <ImagePlaceholder aspectRatio='aspect-[2/3]' />}
+        {(!imageLoaded || imageFailed) && (
+          <ImagePlaceholder aspectRatio='aspect-[2/3]' failed={imageFailed} />
+        )}
         {/* 图片 */}
-        <Image
-          src={processImageUrl(actualPoster)}
-          alt={actualTitle}
-          fill
-          className='object-cover'
-          referrerPolicy='no-referrer'
-          onLoadingComplete={() => setIsLoading(true)}
-        />
+        {imageSrc && !imageFailed && (
+          <Image
+            src={imageSrc}
+            alt={actualTitle}
+            fill
+            className='object-cover'
+            referrerPolicy='no-referrer'
+            onLoad={() => setImageLoaded(true)}
+            onError={() => {
+              if (!useOriginalImage && currentPoster) {
+                setUseOriginalImage(true);
+                return;
+              }
+              if (posterIndex < posterCandidates.length - 1) {
+                setPosterIndex((prev) => prev + 1);
+                setUseOriginalImage(false);
+                setImageLoaded(false);
+                return;
+              }
+              setImageFailed(true);
+            }}
+          />
+        )}
 
         {/* 悬浮遮罩 */}
         <div className='absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100' />
@@ -295,7 +378,7 @@ export default function VideoCard({
             <PlayCircleIcon
               size={50}
               strokeWidth={0.8}
-              className='text-white fill-transparent transition-all duration-300 ease-out hover:fill-green-500 hover:scale-[1.1]'
+              className='text-white fill-transparent transition-all duration-300 ease-out hover:fill-neon hover:scale-[1.1]'
             />
           </div>
         )}
@@ -307,7 +390,7 @@ export default function VideoCard({
               <CheckCircle
                 onClick={handleDeleteRecord}
                 size={20}
-                className='text-white transition-all duration-300 ease-out hover:stroke-green-500 hover:scale-[1.1]'
+                className='text-white transition-all duration-300 ease-out hover:stroke-neon hover:scale-[1.1]'
               />
             )}
             {config.showHeart && (
@@ -326,13 +409,13 @@ export default function VideoCard({
 
         {/* 徽章 */}
         {config.showRating && rate && (
-          <div className='absolute top-2 right-2 bg-pink-500 text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-md transition-all duration-300 ease-out group-hover:scale-110'>
+          <div className='absolute top-2 right-2 bg-neon text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-[0_0_10px_rgba(82,99,255,0.5)] transition-all duration-300 ease-out group-hover:scale-110'>
             {rate}
           </div>
         )}
 
         {actualEpisodes && actualEpisodes > 1 && (
-          <div className='absolute top-2 right-2 bg-green-500 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-md transition-all duration-300 ease-out group-hover:scale-110'>
+          <div className='absolute top-2 right-2 bg-neon/90 text-white text-xs font-semibold px-2 py-1 rounded-md shadow-[0_0_8px_rgba(82,99,255,0.4)] transition-all duration-300 ease-out group-hover:scale-110'>
             {currentEpisode
               ? `${currentEpisode}/${actualEpisodes}`
               : actualEpisodes}
@@ -348,7 +431,7 @@ export default function VideoCard({
             onClick={(e) => e.stopPropagation()}
             className='absolute top-2 left-2 opacity-0 -translate-x-2 transition-all duration-300 ease-in-out delay-100 group-hover:opacity-100 group-hover:translate-x-0'
           >
-            <div className='bg-green-500 text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-md hover:bg-green-600 hover:scale-[1.1] transition-all duration-300 ease-out'>
+            <div className='bg-neon text-white text-xs font-bold w-7 h-7 rounded-full flex items-center justify-center shadow-[0_0_8px_rgba(82,99,255,0.4)] hover:bg-neon-light hover:scale-[1.1] transition-all duration-300 ease-out'>
               <Link size={16} />
             </div>
           </a>
@@ -357,9 +440,9 @@ export default function VideoCard({
 
       {/* 进度条 */}
       {config.showProgress && progress !== undefined && (
-        <div className='mt-1 h-1 w-full bg-gray-200 rounded-full overflow-hidden'>
+        <div className='mt-1 h-1 w-full bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden'>
           <div
-            className='h-full bg-green-500 transition-all duration-500 ease-out'
+            className='h-full bg-neon transition-all duration-500 ease-out'
             style={{ width: `${progress}%` }}
           />
         </div>
@@ -368,7 +451,7 @@ export default function VideoCard({
       {/* 标题与来源 */}
       <div className='mt-2 text-center'>
         <div className='relative'>
-          <span className='block text-sm font-semibold truncate text-gray-900 dark:text-gray-100 transition-colors duration-300 ease-in-out group-hover:text-green-600 dark:group-hover:text-green-400 peer'>
+          <span className='block text-sm font-semibold truncate text-gray-800 dark:text-gray-100 transition-colors duration-300 ease-in-out group-hover:text-cyan peer'>
             {actualTitle}
           </span>
           {/* 自定义 tooltip */}
@@ -377,10 +460,17 @@ export default function VideoCard({
             <div className='absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-gray-800'></div>
           </div>
         </div>
-        {config.showSourceName && source_name && (
+        {from === 'search' && detailBadges.length > 0 && (
+          <div className='mt-1 flex flex-wrap items-center justify-center gap-1 text-[11px] leading-4 text-gray-500 dark:text-gray-400'>
+            {detailBadges.map((badge) => (
+              <span key={badge}>{badge}</span>
+            ))}
+          </div>
+        )}
+        {config.showSourceName && actualSourceName && (
           <span className='block text-xs text-gray-500 dark:text-gray-400 mt-1'>
-            <span className='inline-block border rounded px-2 py-0.5 border-gray-500/60 dark:border-gray-400/60 transition-all duration-300 ease-in-out group-hover:border-green-500/60 group-hover:text-green-600 dark:group-hover:text-green-400'>
-              {source_name}
+            <span className='inline-block border rounded px-2 py-0.5 border-gray-300 dark:border-gray-600/60 transition-all duration-300 ease-in-out group-hover:border-neon/60 group-hover:text-cyan'>
+              {actualSourceName}
             </span>
           </span>
         )}

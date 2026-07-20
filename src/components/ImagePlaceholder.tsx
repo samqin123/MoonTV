@@ -1,14 +1,25 @@
 // 图片占位符组件 - 实现骨架屏效果（支持暗色模式）
-const ImagePlaceholder = ({ aspectRatio }: { aspectRatio: string }) => (
+const ImagePlaceholder = ({
+  aspectRatio,
+  failed = false,
+}: {
+  aspectRatio: string;
+  failed?: boolean;
+}) => (
   <div
-    className={`w-full ${aspectRatio} rounded-lg`}
+    className={`w-full ${aspectRatio} rounded-lg flex items-center justify-center`}
     style={{
       background:
         'linear-gradient(90deg, var(--skeleton-color) 25%, var(--skeleton-highlight) 50%, var(--skeleton-color) 75%)',
       backgroundSize: '200% 100%',
-      animation: 'shine 1.5s infinite',
+      animation: failed ? 'none' : 'shine 1.5s infinite',
     }}
   >
+    {failed && (
+      <span className='px-2 text-center text-xs text-gray-500 dark:text-gray-400'>
+        暂无封面
+      </span>
+    )}
     <style>{`
       @keyframes shine {
         0% { background-position: -200% 0; }

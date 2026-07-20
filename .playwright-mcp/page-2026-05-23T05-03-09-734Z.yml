@@ -1,0 +1,114 @@
+- generic [active] [ref=e1]:
+  - alert [ref=e12]
+  - generic [ref=e558]:
+    - banner [ref=e751]:
+      - generic [ref=e752]:
+        - button "Back" [ref=e754] [cursor=pointer]:
+          - img [ref=e755]
+        - generic [ref=e757]:
+          - button "Toggle theme" [ref=e758] [cursor=pointer]:
+            - img [ref=e759]
+          - button "User Menu" [ref=e762] [cursor=pointer]:
+            - img [ref=e763]
+      - link "Vision TV Vision TV" [ref=e767] [cursor=pointer]:
+        - /url: /
+        - img "Vision TV" [ref=e768]
+        - text: Vision TV
+    - main [ref=e618]:
+      - generic [ref=e619]:
+        - heading "庆余年 > 第 1 集" [level=1] [ref=e769]
+        - generic [ref=e771]:
+          - generic [ref=e775]: 魔都资源 不可用，请在右侧换源列表手动切换。
+          - generic [ref=e777]:
+            - generic [ref=e778]:
+              - generic [ref=e779] [cursor=pointer]: 选集
+              - generic [ref=e780] [cursor=pointer]: 换源
+            - generic [ref=e781]:
+              - button "1-46" [ref=e784] [cursor=pointer]: 1-46
+              - button [ref=e786] [cursor=pointer]:
+                - img [ref=e787]
+            - generic [ref=e789]:
+              - button "1" [ref=e790] [cursor=pointer]
+              - button "2" [ref=e791] [cursor=pointer]
+              - button "3" [ref=e792] [cursor=pointer]
+              - button "4" [ref=e793] [cursor=pointer]
+              - button "5" [ref=e794] [cursor=pointer]
+              - button "6" [ref=e795] [cursor=pointer]
+              - button "7" [ref=e796] [cursor=pointer]
+              - button "8" [ref=e797] [cursor=pointer]
+              - button "9" [ref=e798] [cursor=pointer]
+              - button "10" [ref=e799] [cursor=pointer]
+              - button "11" [ref=e800] [cursor=pointer]
+              - button "12" [ref=e801] [cursor=pointer]
+              - button "13" [ref=e802] [cursor=pointer]
+              - button "14" [ref=e803] [cursor=pointer]
+              - button "15" [ref=e804] [cursor=pointer]
+              - button "16" [ref=e805] [cursor=pointer]
+              - button "17" [ref=e806] [cursor=pointer]
+              - button "18" [ref=e807] [cursor=pointer]
+              - button "19" [ref=e808] [cursor=pointer]
+              - button "20" [ref=e809] [cursor=pointer]
+              - button "21" [ref=e810] [cursor=pointer]
+              - button "22" [ref=e811] [cursor=pointer]
+              - button "23" [ref=e812] [cursor=pointer]
+              - button "24" [ref=e813] [cursor=pointer]
+              - button "25" [ref=e814] [cursor=pointer]
+              - button "26" [ref=e815] [cursor=pointer]
+              - button "27" [ref=e816] [cursor=pointer]
+              - button "28" [ref=e817] [cursor=pointer]
+              - button "29" [ref=e818] [cursor=pointer]
+              - button "30" [ref=e819] [cursor=pointer]
+              - button "31" [ref=e820] [cursor=pointer]
+              - button "32" [ref=e821] [cursor=pointer]
+              - button "33" [ref=e822] [cursor=pointer]
+              - button "34" [ref=e823] [cursor=pointer]
+              - button "35" [ref=e824] [cursor=pointer]
+              - button "36" [ref=e825] [cursor=pointer]
+              - button "37" [ref=e826] [cursor=pointer]
+              - button "38" [ref=e827] [cursor=pointer]
+              - button "39" [ref=e828] [cursor=pointer]
+              - button "40" [ref=e829] [cursor=pointer]
+              - button "41" [ref=e830] [cursor=pointer]
+              - button "42" [ref=e831] [cursor=pointer]
+              - button "43" [ref=e832] [cursor=pointer]
+              - button "44" [ref=e833] [cursor=pointer]
+              - button "45" [ref=e834] [cursor=pointer]
+              - button "46" [ref=e835] [cursor=pointer]
+        - generic [ref=e838]:
+          - heading "庆余年" [level=1] [ref=e839]:
+            - text: 庆余年
+            - button [ref=e840] [cursor=pointer]:
+              - img [ref=e841]
+          - generic [ref=e843]:
+            - generic [ref=e844]: 剧情,古装
+            - generic [ref=e845]: "2019"
+            - generic [ref=e846]: 魔都资源
+            - generic [ref=e847]: 国产剧
+          - generic [ref=e848]: 某大学文学史专业的学生张庆熟读古典名著，但他用现代观念剖析古代文学史的论文命题不被叶教授所认可。为了让叶教授成为自己的研究生导师，张庆决定通过写小说的方式，进一步阐述自己想要表达的观点。在他的小说中，身世神秘的少年——范闲，自小跟随奶奶生活在海边小城澹州，随着一位老师的突然造访，他看似平静的生活开始直面重重的危机与考验。在神秘老师和一位蒙眼守护者的指点下，范闲熟识药性药理，修炼霸道真气并精进武艺，而后接连化解了诸多危局。因对身世之谜的好奇，范闲离开澹州，前赴京都。在京都，范闲凭借过人的智谋与勇武成为年轻一代的佼佼者，他先以诗文冠绝京都，而后出使邻国，营救人质，整合谍报网，查处震动朝野的走私案……这个过程中，范闲饱尝人间冷暖并坚守对正义、良善的坚持，历经家族、江湖、庙堂的种种考验与锤炼，书写了光彩的人生传奇。
+    - navigation [ref=e849]:
+      - list [ref=e850]:
+        - listitem [ref=e851]:
+          - link "首页" [ref=e852] [cursor=pointer]:
+            - /url: /
+            - img [ref=e853]
+            - generic [ref=e856]: 首页
+        - listitem [ref=e857]:
+          - link "搜索" [ref=e858] [cursor=pointer]:
+            - /url: /search
+            - img [ref=e859]
+            - generic [ref=e862]: 搜索
+        - listitem [ref=e863]:
+          - link "电影" [ref=e864] [cursor=pointer]:
+            - /url: /douban?type=movie
+            - img [ref=e865]
+            - generic [ref=e867]: 电影
+        - listitem [ref=e868]:
+          - link "剧集" [ref=e869] [cursor=pointer]:
+            - /url: /douban?type=tv
+            - img [ref=e870]
+            - generic [ref=e873]: 剧集
+        - listitem [ref=e874]:
+          - link "综艺" [ref=e875] [cursor=pointer]:
+            - /url: /douban?type=show
+            - img [ref=e876]
+            - generic [ref=e880]: 综艺
