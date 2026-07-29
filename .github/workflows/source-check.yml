@@ -1,0 +1,52 @@
+name: Source Health Check
+
+on:
+  schedule:
+    # 每 6 小时一次 = 每天 4 遍（UTC 00:00 / 06:00 / 12:00 / 18:00）
+    - cron: '0 */6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run source health check
+        id: check
+        run: node scripts/check-sources.mjs
+
+      - name: Commit & push changes
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add config.json
+          git commit -m "chore: auto-update sources (add ${{ steps.check.outputs.added_count }}, remove ${{ steps.check.outputs.removed_count }})"
+          git push
+
+      - name: Trigger Cloudflare Pages deploy
+        # 仅当仓库设置了 CLOUDFLARE_API_TOKEN 时才执行；否则依赖 Cloudflare 自动构建（push 即重建）
+        if: steps.check.outputs.changed == 'true' && env.CF_TOKEN != ''
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          echo "通过 Cloudflare API 触发重建（使用用户提供的令牌）"
+          curl -s -X POST \
+            "https://api.cloudflare.com/client/v4/accounts/${CF_ACCOUNT}/pages/projects/moontv-personal/deployments" \
+            -H "Authorization: Bearer ${CF_TOKEN}" \
+            -H "Content-Type: application/json" \
+            --data '{"branch":"main"}'
