@@ -13,6 +13,9 @@ jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 20
+    env:
+      CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,9 +43,6 @@ jobs:
       - name: Trigger Cloudflare Pages deploy
         # 仅当仓库设置了 CLOUDFLARE_API_TOKEN 时才执行；否则依赖 Cloudflare 自动构建（push 即重建）
         if: steps.check.outputs.changed == 'true' && env.CF_TOKEN != ''
-        env:
-          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
         run: |
           echo "通过 Cloudflare API 触发重建（使用用户提供的令牌）"
           curl -s -X POST \
