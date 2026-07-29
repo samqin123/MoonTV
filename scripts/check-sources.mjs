@@ -5,8 +5,8 @@
  * - 探测 scripts/candidates.json 候选池，添加确认健康的源
  * - 仅当确有变化时写回 config.json，并通过 $GITHUB_OUTPUT 输出 changed 标记
  *
- * 注意：GitHub Actions 运行在数据中心 IP，部分站点会被 Cloudflare 拦截（403/429/503），
- * 这类“结果不明确”的源不会被移除也不会被添加，以避免误删可用源。
+ * 注意：GitHub Actions 运行在数据中心 IP，很多站点会被 Cloudflare 拦截（连接失败/403/429/503），
+ * 这类“结果不明确”的源不会被移除也不会被添加，以避免误删用户在浏览器里能正常用的源。
  */
 import fs from 'node:fs';
 import path from 'node:path';
@@ -21,10 +21,17 @@ const TIMEOUT = 12000;
 const UA =
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36';
 
-const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
-
-/** 探测单个 api 端点一次，返回 { status: 'ok' | 'dead' | 'unknown', reason, retryable } */
-async function probeOnce(api) {
+/**
+ * 探测单个 api 端点，返回 { status: 'ok' | 'dead' | 'unknown', reason }
+ *
+ * 判定原则（针对 CI 数据中心 IP 的特殊性）：
+ * - 连接失败 / 超时 → 'unknown'（保留）：多为 Cloudflare 拦截数据中心 IP，
+ *   不等于源真的死了，避免误删用户在浏览器里能用的源。
+ * - 403 / 429 / 503 → 'unknown'（保留）：疑似人机验证 / 限流。
+ * - 5xx / 其他 4xx / HTML 错误页 → 'dead'（移除）：服务端明确返回异常。
+ * - 合法 JSON/XML（含 code/list/rss）→ 'ok'（新增/保留）。
+ */
+async function probe(api) {
   const sep = api.includes('?') ? '&' : '?';
   const url = `${api}${sep}ac=list&pg=1`;
   const controller = new AbortController();
@@ -56,21 +63,9 @@ async function probeOnce(api) {
     return { status: 'unknown', reason: '无法识别的返回体' };
   } catch (e) {
     clearTimeout(timer);
-    // 连接级错误/超时为瞬时抖动，可重试
-    return {
-      status: 'dead',
-      reason: e.name === 'AbortError' ? 'timeout' : `error: ${e.message}`,
-      retryable: true,
-    };
+    // 连接级错误/超时：多为 CI IP 被拦截或瞬时抖动，保守保留，不删除
+    return { status: 'unknown', reason: e.name === 'AbortError' ? 'timeout' : `error: ${e.message}` };
   }
-}
-
-/** 带一次重试的探测：网络级错误/超时重试一次，降低 CI 误删率 */
-async function probe(api) {
-  const r1 = await probeOnce(api);
-  if (r1.status !== 'dead' || !r1.retryable) return r1;
-  await sleep(1500);
-  return probeOnce(api);
 }
 
 /** 限制并发的 map */
